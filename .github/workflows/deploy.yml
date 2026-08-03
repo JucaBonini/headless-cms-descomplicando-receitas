@@ -1,4 +1,4 @@
-name: Deploy receitas-headless to Contabo VPS (CyberPanel)
+name: Deploy receitas-headless to Integrator ICP VPS
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   web-deploy:
-    name: Build & Deploy via FTP
+    name: Build & Deploy via FTP to Integrator ICP
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code
