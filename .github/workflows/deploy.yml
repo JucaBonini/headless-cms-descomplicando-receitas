@@ -28,12 +28,11 @@ jobs:
         run: npm run build
 
       - name: 🚀 Deploy via SFTP to Integrator ICP (SFTPGo)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /
-          local-dir: ./dist/
-          protocol: sftp
           port: 22
+          local_dir: './dist/'
+          remote_dir: '/'
