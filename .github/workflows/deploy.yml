@@ -27,13 +27,13 @@ jobs:
       - name: 🏗️ Build Project (Gera HTML/CSS estáticos buscando dados do WP)
         run: npm run build
 
-      - name: 🚀 Deploy via FTP to CyberPanel
+      - name: 🚀 Deploy via SFTP to Integrator ICP (SFTPGo)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: / # Envia para o diretório raiz do FTP (que deve estar apontado para public_html)
-          local-dir: ./dist/ # Pasta que o Astro gera ao fazer o build
-          protocol: ftp
-          port: 21
+          server-dir: /
+          local-dir: ./dist/
+          protocol: sftp
+          port: 22
