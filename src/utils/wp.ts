@@ -43,7 +43,7 @@ export interface WPCategory {
   description?: string;
 }
 
-const WP_URL = 'https://descomplicandoreceitas.com.br';
+const WP_URL = 'https://admin.descomplicandoreceitas.com.br';
 
 export async function getCategories(): Promise<WPCategory[]> {
   try {
