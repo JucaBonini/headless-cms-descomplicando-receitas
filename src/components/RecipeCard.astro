@@ -1,0 +1,77 @@
+---
+import { Image } from 'astro:assets';
+import type { WPPost } from '../utils/wp';
+
+interface Props {
+  post: WPPost;
+}
+
+const { post } = Astro.props;
+
+const media = post._embedded?.['wp:featuredmedia']?.[0];
+const imageUrl = media?.media_details?.sizes?.medium_large?.source_url 
+              || media?.source_url 
+              || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?q=80&w=800&auto=format&fit=crop';
+
+const postCategories = post._embedded?.['wp:term']?.[0] || [];
+const categoryName = postCategories[0]?.name || 'Receita';
+const categoryIds = post.categories.join(',');
+const excerpt = post.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 110).trim() + '...';
+
+const formattedDate = new Date(post.date).toLocaleDateString('pt-BR', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric'
+});
+---
+
+<article 
+  class="recipe-card bg-white dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-700/60 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-between"
+  data-categories={categoryIds}
+  data-title={post.title.rendered.toLowerCase()}
+  data-content={post.content.rendered.toLowerCase()}
+>
+  <div>
+    <div class="relative aspect-[4/3] overflow-hidden">
+      <img 
+        src={imageUrl} 
+        alt={post.title.rendered} 
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+      <span class="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
+        {categoryName}
+      </span>
+      <button 
+        class="favorite-btn absolute top-4 right-4 p-2 bg-white/80 dark:bg-slate-900/80 rounded-full backdrop-blur hover:bg-white dark:hover:bg-slate-900 transition-colors shadow-sm cursor-pointer" 
+        aria-label="Favoritar"
+        data-post-id={post.id}
+      >
+        <span class="material-symbols-outlined text-primary text-xl block">favorite</span>
+      </button>
+    </div>
+
+    <div class="p-6">
+      <div class="flex items-center gap-4 text-xs font-bold text-slate-500 dark:text-slate-400 mb-3">
+        <span class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-primary">schedule</span> {formattedDate}
+        </span>
+        <span class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-amber-500">star</span> 4.9
+        </span>
+      </div>
+
+      <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors mb-3 line-clamp-2 leading-snug" set:html={post.title.rendered}></h3>
+      <p class="text-slate-600 dark:text-slate-400 text-sm line-clamp-2 mb-4 leading-relaxed">{excerpt}</p>
+    </div>
+  </div>
+
+  <div class="px-6 pb-6 pt-0">
+    <a 
+      href={`/receita/${post.slug}`} 
+      class="w-full bg-slate-50 dark:bg-slate-700/50 hover:bg-primary hover:text-white text-slate-700 dark:text-slate-200 py-3 rounded-xl font-bold text-sm inline-flex items-center justify-center gap-2 transition-all active:scale-95 group-hover:shadow-lg group-hover:shadow-primary/20"
+    >
+      Ver Receita <span class="material-symbols-outlined text-base">arrow_forward</span>
+    </a>
+  </div>
+</article>

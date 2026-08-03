@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Descomplicando Receitas - Cozinha Simples e Rápida</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 transition-colors duration-200">
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16 sm:h-20">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2 group" href="/">
+<div class="bg-primary text-white p-1.5 rounded-lg">
+<span class="material-symbols-outlined block text-2xl">restaurant_menu</span>
+</div>
+<span class="text-xl font-black tracking-tight text-slate-900 dark:text-white">Descomplicando Receitas</span>
+</a>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Receitas</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Categorias</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Dicas</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Sobre</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-3 py-1.5 border border-transparent focus-within:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-slate-400 text-xl">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-slate-400" placeholder="Buscar receitas..." type="text"/>
+</div>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main>
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+<div class="@container">
+<div class="flex flex-col gap-8 lg:flex-row items-center lg:items-stretch">
+<div class="w-full lg:w-3/5 relative rounded-2xl overflow-hidden group min-h-[400px]">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Salada bowl colorida com ingredientes frescos e proteínas" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPy9ycs5sVQsUzb-DmuJ8C5P2bt0MxfvBZHKaUcZ2I-E5Bi2jbjSo4OencLIUI52ScMla2KqH7lu80CjluVXjHeGhSyV3iMh9kdZfW0HiYB5f8jKMHTFbZ_sWQdTjp-gYAmGFV4lcDLZ33kCPhsReqAHPV5WEGuCLKPCXZStFuEG2hzhIjNO-ZUjrIw4BzTSaesMzBNjEMazLAYP0lyuHRKLTRLUNKICqlLoxs_RHYckJORpej7SupP6G9Nk4IAg6biL26M_oyxg')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 sm:p-10 text-white">
+<span class="bg-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 inline-block">Receita do Dia</span>
+<h1 class="text-3xl sm:text-5xl font-black mb-4 leading-tight">Bowl Mediterrâneo: O Almoço Perfeito em 15 Minutos</h1>
+<p class="text-slate-200 text-lg mb-6 max-w-xl">Uma combinação nutritiva de grãos, vegetais frescos e molho artesanal para quem busca sabor e praticidade.</p>
+<button class="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 transition-transform active:scale-95 shadow-lg shadow-primary/20">
+                                Ver Receita Completa <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="w-full lg:w-2/5 flex flex-col gap-4">
+<div class="bg-primary/10 dark:bg-primary/5 p-6 rounded-2xl border border-primary/20 flex-1">
+<h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">trending_up</span>
+                                Tendências de Hoje
+                            </h2>
+<div class="space-y-4">
+<a class="flex gap-4 group" href="#">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-slate-200">
+<img alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Pizza artesanal saindo do forno a lenha" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMqVD2NVEV6fnPboowrfn7XyotQMTIlsMCX0FBU7MdaY-UJAzLErh7trc96QITOjNlCrnJGO-geWWEWoHN96vlZFpeMs3fJTNzqUvK80DmDz6ZML-Ly_JHmpZiD922piU6ALuuulANEKdwtMkMmGq9naeVAY-3fNIlGmg9CBxNStYORlz2t6p-Yr6pvbzUyd-VkAoDe3KKIfiQf9FRvm7MaNUIqWaKVY4Qg0Qstr2Q5RBwty2m3LpDKEIqFvY8CkJ5q9y0q5hMwA"/>
+</div>
+<div>
+<h3 class="font-bold group-hover:text-primary transition-colors">Pizza de Frigideira 5 Minutos</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Rápida e crocante para o jantar</p>
+</div>
+</a>
+<a class="flex gap-4 group" href="#">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-slate-200">
+<img alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Tosta de abacate com ovo poche" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-eB6apI-fGpDSBJMTAFAHTMwNFZRw5qKsadxyoP9CUxf5JVtrezopmsyKaFq0MvSXAsB9tiFzq1ys_TmlIPik8l6VNGJQN2bvDC-agGf4vup5ZDQbQxgFBVWU0l6bBKWlv-eTe2elkOx6yLJUPF9qh3Y-Hgibk3fBSHhjytXCB9670Cq3V3_5w01Gry97a45jTNIcKHIC9b4528nEAYXGE1uaMHiJ-Cd7SdNe8gRhXUEl1-QbMRkyZiT3sUmTtBuueNCK-mwdzQ"/>
+</div>
+<div>
+<h3 class="font-bold group-hover:text-primary transition-colors">Avocado Toast Especial</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">O clássico café da manhã gourmet</p>
+</div>
+</a>
+<a class="flex gap-4 group" href="#">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-slate-200">
+<img alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Donuts artesanais cobertos com chocolate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDruYcKUNI9MYEzDSA0wMO9CdqOhiXUGob4a94N6fI--iWSTt9B-KKKJhJ3pYcN2Fo8oZvB3xaVsgo5vj4fZHq57KiI19ra9HnQxd5m0bpmdVpI991WdTxGkeLLFtsLRJaswQZ19HVI86F5Rh0vbFfMOHhud3pvW5twFnK_FO8B8kok9NGpZRHRvhLpX0dfzdWqgCCOjpGaBwRvk4YrXl5i455o-u4Kes3EanPAmqJkF4jgMu2EyFppTK_qPIihJXCB0SxQMHCYLw"/>
+</div>
+<div>
+<h3 class="font-bold group-hover:text-primary transition-colors">Donuts de Forno Fit</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Para adoçar a tarde sem culpa</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<h2 class="text-2xl font-bold mb-8">Navegar por Categoria</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<a class="group flex flex-col items-center p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all hover:shadow-xl hover:shadow-primary/5" href="#">
+<div class="w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">coffee</span>
+</div>
+<span class="font-bold">Café da Manhã</span>
+</a>
+<a class="group flex flex-col items-center p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all hover:shadow-xl hover:shadow-primary/5" href="#">
+<div class="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-red-500 text-3xl">restaurant</span>
+</div>
+<span class="font-bold">Almoço</span>
+</a>
+<a class="group flex flex-col items-center p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all hover:shadow-xl hover:shadow-primary/5" href="#">
+<div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-blue-500 text-3xl">nights_stay</span>
+</div>
+<span class="font-bold">Jantar</span>
+</a>
+<a class="group flex flex-col items-center p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all hover:shadow-xl hover:shadow-primary/5" href="#">
+<div class="w-16 h-16 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-pink-500 text-3xl">icecream</span>
+</div>
+<span class="font-bold">Sobremesas</span>
+</a>
+</div>
+</section>
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-3xl font-black">Últimas Receitas</h2>
+<a class="text-primary font-bold flex items-center gap-1 hover:underline" href="#">
+                    Ver tudo <span class="material-symbols-outlined">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<article class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-2xl transition-all group">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Prato de massa italiana com molho pesto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChfdiXQApAy78TIyMFtsVmTQnb-CPvvyoATrbJeSmCFWE9W274xahskC_LFc99epZH1-VpnCMF2yx0YQWfxnyB3Zpqp7QMlX1rwASoJU19SaLACLw_hhlml61l1e-H8OSj2pZOoSWoVmFBmPhcSlV7ima2uOdZO33aGcMcFM-xmkRkV580rUi789GPZ65FX-AUqVTfXjkorhCRn56r7ukdv-CGe89QbWNWLeQ42FlyIKt3NxhKtbBchLvyT8M2NAEmcu2IzQb9sg"/>
+<button class="absolute top-4 right-4 p-2 bg-white/80 dark:bg-slate-900/80 rounded-full backdrop-blur hover:bg-white dark:hover:bg-slate-900 transition-colors">
+<span class="material-symbols-outlined text-primary">favorite</span>
+</button>
+</div>
+<div class="p-6">
+<div class="flex items-center gap-4 text-xs font-bold text-slate-500 dark:text-slate-400 mb-3">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 20 min</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">bar_chart</span> Iniciante</span>
+</div>
+<h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Pesto Caseiro: O Segredo da Nonna</h3>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">Aprenda a fazer o molho pesto tradicional usando manjericão fresco e ingredientes selecionados.</p>
+<div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-slate-200">
+<img alt="" class="w-full h-full rounded-full" data-alt="Avatar do chef Lucas Lima" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_ZtCtD-1pEh5W9TPtwrCGyN3MrumReX9OeUyOXN4dWLk0GnB8IPNnpZ0kSPtfceHEb26psWMGZmCr99f2yEceKF2--xGMf7OhR9q0LI8RVUqGuSa-y--N6s7dD6oRjyMtiE9XOBK-LiwEAFn3c_bCJO5uNYnqzEpDmiX03ZRQLQdfXsDLg4_RZidE4QU5s_m00qf3k9siKcD3SrmxPr1o4gaiKUlUEJC5-36TXLmnvfKB206NW0to5IwfeWbARi2KM5rLV8ghgA"/>
+</div>
+<span class="text-xs font-semibold">Chef Lucas</span>
+</div>
+<span class="text-xs text-slate-400">Ontem</span>
+</div>
+</div>
+</article>
+<article class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-2xl transition-all group">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Salada detox completa com sementes e grãos" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC64wz6K_4GDjVTkpoFPafYn2AZA21ZQ0csaTXrz18g2P4yvcwAZODYjGfTF8OYPIt0SsHJGMN_w-myhExKPyl_NeQZNK7celAzpcHzPYt110kKpjYCqlVNz3oH0DsmZpPo0y0ZyZobkaCAMgqtwvKZK-KhBy27cNTQBIEPvMQi8WQv6oz3ypEW4-XrOyQVYtbMQE7hDdvbgujrmHZO-RJhQsr7SH9jTJgF57CNAQM-77NONP1EgzoWIjfExtea7hUtqCwt3rONQw"/>
+<button class="absolute top-4 right-4 p-2 bg-white/80 dark:bg-slate-900/80 rounded-full backdrop-blur hover:bg-white dark:hover:bg-slate-900 transition-colors">
+<span class="material-symbols-outlined text-primary">favorite</span>
+</button>
+</div>
+<div class="p-6">
+<div class="flex items-center gap-4 text-xs font-bold text-slate-500 dark:text-slate-400 mb-3">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 10 min</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">bar_chart</span> Fácil</span>
+</div>
+<h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Mix Detox com Molho de Limão</h3>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">Uma explosão de frescor e saúde para os dias quentes. Simples e direto ao ponto.</p>
+<div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-slate-200">
+<img alt="" class="w-full h-full rounded-full" data-alt="Avatar da chef Ana Santos" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4W3NtfcrLXMv5dr4hcJq3GXBkS4oOZDoSKHD1gOlE7R_HZr0O0RZbEW8nf2I3VqDANxdojU5_Sf6s7UwpNhvU94xHK8JEe--c9OXYW-wP0ZNsrdlnva_upp7MwyqiWs6xy-jUGsxKdtNuNaP0RQS0OezzAVekkTv8EXacxF_W0T6lAJkijTYCUGby1TlFomgTdoihBadMdraV5VD7bTUElO4xrIVGT_msgKoBCpA3tkkc37Pt3pqUkw9JxuYvSarGTaWh0bUXCw"/>
+</div>
+<span class="text-xs font-semibold">Chef Ana</span>
+</div>
+<span class="text-xs text-slate-400">Há 2 dias</span>
+</div>
+</div>
+</article>
+<article class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-2xl transition-all group">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Panquecas americanas fofinhas com mel e frutas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUKRMyW13NE4PPuELYQNQqDB3q5WHx01rjtKspZeCFo6dvt5qCumNN7xt_gbQFlXSHUVTm54hoQwPSzNBby3YRvL40y-AZjKAEcPttVtBYz2Z-FErlOnRzoX9c9fXRKl2ZaI3b0zVnGSuroKb-cwQKizOSNiCn47k2eed8xwKf-XVX0nQjYed9M2SoV9S__U-mMDri10JhPx_7R3DPznnIOk2OIdOGra4l6j1zylAfu4Q30RzOLAqiV2CROe2D8T9CRAMqZrZwYw"/>
+<button class="absolute top-4 right-4 p-2 bg-white/80 dark:bg-slate-900/80 rounded-full backdrop-blur hover:bg-white dark:hover:bg-slate-900 transition-colors">
+<span class="material-symbols-outlined text-primary">favorite</span>
+</button>
+</div>
+<div class="p-6">
+<div class="flex items-center gap-4 text-xs font-bold text-slate-500 dark:text-slate-400 mb-3">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 30 min</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">bar_chart</span> Intermediário</span>
+</div>
+<h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Panquecas Americanas Nuvem</h3>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">A receita definitiva para panquecas altas e extremamente macias para o seu brunch.</p>
+<div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-slate-200">
+<img alt="" class="w-full h-full rounded-full" data-alt="Avatar do chef Pedro Rocha" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhCUl3jMGxlQZr0y-IlefPRN0tno06_kXQjqC_trm6XFJZQ2b1IriuUEGud2z3TAhsaqybSeHmZDNG1Nclq3Y46zTwOoVSc-LZmqcYfPzYkwaD6wKgmkDRHIgnkNbcQyXpz762ntNoVcEr_P5xGzUvEm0cHPmg79VCu-qwDY6LNqf8ZyfN5qKaw9pbOohno28dx3F_T0H9Vf0huyLZwyrD8fFWzwGz6uu0HviQRd7DQcgNLmiyJx8GyRqX42AzGo46Z34Fsibwsw"/>
+</div>
+<span class="text-xs font-semibold">Chef Pedro</span>
+</div>
+<span class="text-xs text-slate-400">Há 3 dias</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<section class="bg-primary/5 dark:bg-primary/10 py-16 sm:py-24 mt-12">
+<div class="max-w-4xl mx-auto px-4 text-center">
+<span class="material-symbols-outlined text-primary text-5xl mb-6">mail_lock</span>
+<h2 class="text-3xl sm:text-4xl font-black mb-4">Receba novas receitas no seu e-mail</h2>
+<p class="text-slate-600 dark:text-slate-400 text-lg mb-8">Junte-se a mais de 50.000 cozinheiros amadores e receba semanalmente dicas e receitas exclusivas que simplificam sua rotina.</p>
+<form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+<input class="flex-1 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-4 focus:ring-primary focus:border-primary transition-all" placeholder="Seu melhor e-mail" required="" type="email"/>
+<button class="bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg shadow-primary/20" type="submit">
+                        Inscrever-se
+                    </button>
+</form>
+<p class="mt-4 text-xs text-slate-500">Respeitamos sua privacidade. Cancele a qualquer momento.</p>
+</div>
+</section>
+</main>
+<footer class="bg-slate-900 text-slate-300 py-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+<div class="col-span-1 md:col-span-2">
+<div class="flex items-center gap-2 mb-6">
+<div class="bg-primary text-white p-1 rounded-lg">
+<span class="material-symbols-outlined block text-xl">restaurant_menu</span>
+</div>
+<span class="text-xl font-black text-white">Descomplicando Receitas</span>
+</div>
+<p class="max-w-md text-slate-400 leading-relaxed">
+                        Nossa missão é mostrar que cozinhar pode ser simples, rápido e incrivelmente prazeroso. Transformamos ingredientes comuns em refeições extraordinárias para o seu dia a dia.
+                    </p>
+<div class="flex gap-4 mt-8">
+<a class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">share</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">play_circle</span>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-white font-bold mb-6">Navegação</h3>
+<ul class="space-y-4 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Todas as Receitas</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Dicas de Cozinha</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Menu Semanal</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Saudáveis &amp; Fit</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-white font-bold mb-6">Institucional</h3>
+<ul class="space-y-4 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Sobre Nós</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contato</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacidade</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Anuncie Conosco</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-slate-800 pt-8 mt-8">
+<nav aria-label="Breadcrumb" class="flex text-xs text-slate-500 gap-2 mb-8">
+<a class="hover:text-slate-300" href="#">Home</a>
+<span>/</span>
+<a class="hover:text-slate-300" href="#">Receitas</a>
+<span>/</span>
+<span class="text-slate-400">Página Inicial</span>
+</nav>
+<div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+<p class="text-sm">© 2024 Descomplicando Receitas. Todos os direitos reservados.</p>
+<div class="flex gap-6 text-sm">
+<a class="hover:text-white transition-colors" href="#">Termos</a>
+<a class="hover:text-white transition-colors" href="#">Privacidade</a>
+<a class="hover:text-white transition-colors" href="#">Cookies</a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

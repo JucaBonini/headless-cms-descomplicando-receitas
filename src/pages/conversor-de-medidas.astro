@@ -1,0 +1,163 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Conversor de Medidas Culinárias - Descomplicando Receitas"
+  description="Converta xícaras, colheres de sopa, gramas, ml e temperaturas de forno facilmente para acertar o ponto exato da sua receita."
+>
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="text-center mb-12">
+      <span class="bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-3 inline-block">
+        Ferramenta Prática
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-black mb-4">Conversor de Medidas Culinárias</h1>
+      <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-base sm:text-lg">
+        Nunca mais erre a quantidade de ingredientes! Converta medidas volúmicas para gramas ou mililitros instantaneamente.
+      </p>
+    </div>
+
+    <!-- Calculadora Dinâmica de Xícaras/Colheres para Gramas/ML -->
+    <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200 dark:border-slate-700 mb-16">
+      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary">scale</span>
+        Converter Ingrediente
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+        <div>
+          <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">1. Selecione o Ingrediente</label>
+          <select id="ingredient-select" class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl p-3 text-sm font-semibold outline-none focus:border-primary">
+            <option value="farinha">Farinha de Trigo</option>
+            <option value="acucar">Açúcar Refinado</option>
+            <option value="manteiga">Manteiga / Margarina</option>
+            <option value="chocolate">Chocolate em Pó / Cacau</option>
+            <option value="amido">Amido de Milho</option>
+            <option value="liquidos">Líquidos (Leite, Água, Óleo)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">2. Medida Caseira</label>
+          <select id="unit-select" class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl p-3 text-sm font-semibold outline-none focus:border-primary">
+            <option value="xicara">Xícara de chá (240ml)</option>
+            <option value="meiaxicara">1/2 Xícara de chá</option>
+            <option value="tercoxicara">1/3 Xícara de chá</option>
+            <option value="quartoicara">1/4 Xícara de chá</option>
+            <option value="colher_sopa">Colher de sopa</option>
+            <option value="colher_cha">Colher de chá</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">3. Quantidade</label>
+          <input type="number" id="quantity-input" value="1" min="0.1" step="0.5" class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl p-3 text-sm font-semibold outline-none focus:border-primary" />
+        </div>
+      </div>
+
+      <!-- Resultado da Conversão -->
+      <div class="bg-primary/10 dark:bg-primary/20 p-6 rounded-2xl border border-primary/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <span class="text-xs uppercase font-extrabold text-primary tracking-wider">Resultado Estimado</span>
+          <div class="text-3xl font-black text-slate-900 dark:text-white" id="conversion-result">
+            120 gramas (g)
+          </div>
+        </div>
+        <div class="text-sm text-slate-500 dark:text-slate-300 text-center sm:text-right">
+          *Padrão de xícara de 240ml
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabela de Referência Rápida -->
+    <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200 dark:border-slate-700 mb-16" id="forno">
+      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary">local_fire_department</span>
+        Tabela de Temperatura de Forno
+      </h2>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr class="border-b border-slate-200 dark:border-slate-700 text-slate-500 uppercase text-xs">
+              <th class="py-3 px-4">Termo na Receita</th>
+              <th class="py-3 px-4">Graus Celsius (°C)</th>
+              <th class="py-3 px-4">Fahrenheit (°F)</th>
+              <th class="py-3 px-4">Indicação Recomendada</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+            <tr>
+              <td class="py-3 px-4 font-bold">Forno Bem Brando (Baixo)</td>
+              <td class="py-3 px-4">150°C</td>
+              <td class="py-3 px-4">300°F</td>
+              <td class="py-3 px-4">Suspiros, Merengues, Pudins</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-4 font-bold">Forno Médio (Moderado)</td>
+              <td class="py-3 px-4">180°C</td>
+              <td class="py-3 px-4">350°F</td>
+              <td class="py-3 px-4">Bolos tradicionais, Tortas, Biscoitos</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-4 font-bold">Forno Alto (Quente)</td>
+              <td class="py-3 px-4">200°C - 220°C</td>
+              <td class="py-3 px-4">400°F - 425°F</td>
+              <td class="py-3 px-4">Pães, Massas folhadas, Carnes para dourar</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-4 font-bold">Forno Fortíssimo (Muito Quente)</td>
+              <td class="py-3 px-4">250°C</td>
+              <td class="py-3 px-4">480°F</td>
+              <td class="py-3 px-4">Pizzas, Gratinados rápidos</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script is:inline>
+    function initConverter() {
+      const ingSelect = document.getElementById('ingredient-select');
+      const unitSelect = document.getElementById('unit-select');
+      const qtyInput = document.getElementById('quantity-input');
+      const resultDiv = document.getElementById('conversion-result');
+
+      if (!ingSelect || !unitSelect || !qtyInput || !resultDiv) return;
+
+      // Pesos em gramas de 1 xícara (240ml) por ingrediente
+      const weights = {
+        farinha: { xicara: 120, meiaxicara: 60, tercoxicara: 40, quartoicara: 30, colher_sopa: 7.5, colher_cha: 2.5 },
+        acucar: { xicara: 180, meiaxicara: 90, tercoxicara: 60, quartoicara: 45, colher_sopa: 12, colher_cha: 4 },
+        manteiga: { xicara: 200, meiaxicara: 100, tercoxicara: 67, quartoicara: 50, colher_sopa: 15, colher_cha: 5 },
+        chocolate: { xicara: 90, meiaxicara: 45, tercoxicara: 30, quartoicara: 22.5, colher_sopa: 6, colher_cha: 2 },
+        amido: { xicara: 110, meiaxicara: 55, tercoxicara: 36, quartoicara: 27.5, colher_sopa: 7, colher_cha: 2.3 },
+        liquidos: { xicara: 240, meiaxicara: 120, tercoxicara: 80, quartoicara: 60, colher_sopa: 15, colher_cha: 5 }
+      };
+
+      function calculate() {
+        const ing = ingSelect.value;
+        const unit = unitSelect.value;
+        const qty = parseFloat(qtyInput.value) || 1;
+
+        const baseWeight = weights[ing]?.[unit] || 100;
+        const total = baseWeight * qty;
+
+        const isLiquid = ing === 'liquidos';
+        const unitLabel = isLiquid ? 'ml' : 'gramas (g)';
+
+        resultDiv.innerText = `${Number(total.toFixed(1)).toString().replace('.', ',')} ${unitLabel}`;
+      }
+
+      ingSelect.onchange = calculate;
+      unitSelect.onchange = calculate;
+      qtyInput.oninput = calculate;
+
+      calculate();
+    }
+
+    initConverter();
+    document.addEventListener('astro:after-swap', initConverter);
+  </script>
+</Layout>

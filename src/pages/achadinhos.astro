@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const achadinhos = [
+  {
+    id: 1,
+    title: 'Air Fryer Digital 4L Antiaderente',
+    category: 'Eletrodomésticos',
+    image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?q=80&w=600&auto=format&fit=crop',
+    description: 'A queridinha da cozinha prática! Frita sem óleo de forma rápida e silenciosa.',
+    badge: 'Mais Vendido',
+    link: '#'
+  },
+  {
+    id: 2,
+    title: 'Jogo de Panelas em Cerâmica Antiaderente 5 Peças',
+    category: 'Utensílios',
+    image: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=600&auto=format&fit=crop',
+    description: 'Não gruda nada, fácil de limpar e livre de metais pesados.',
+    badge: 'Recomendado',
+    link: '#'
+  },
+  {
+    id: 3,
+    title: 'Balança Digital de Precisão para Cozinha (1g a 10kg)',
+    category: 'Acessórios',
+    image: 'https://images.unsplash.com/photo-1590794056226-77ef3a6c4743?q=80&w=600&auto=format&fit=crop',
+    description: 'Essencial para acertar bolos, pães e dosagens de receitas.',
+    badge: 'Indispensável',
+    link: '#'
+  },
+  {
+    id: 4,
+    title: 'Kit Utensílios de Silicone com Cabo de Madeira 12 Peças',
+    category: 'Utensílios',
+    image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=600&auto=format&fit=crop',
+    description: 'Não risca suas panelas e resiste a altas temperaturas.',
+    badge: 'Oferta',
+    link: '#'
+  }
+];
+---
+
+<Layout 
+  title="Achadinhos da Cozinha - Recomendados pela Chef | Descomplicando Receitas"
+  description="Confira os melhores utensílios, eletrodomésticos e acessórios de cozinha recomendados para facilitar suas receitas."
+>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-3 inline-block">
+        Recomendações da Chef
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-black mb-4">Achadinhos de Cozinha</h1>
+      <p class="text-slate-600 dark:text-slate-400 text-base sm:text-lg">
+        Selecionamos os melhores equipamentos e utensílios testados e aprovados para equipar a sua cozinha com economia e qualidade.
+      </p>
+    </div>
+
+    <!-- Grid de Achadinhos -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      {achadinhos.map(item => (
+        <div class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="relative aspect-[4/3] overflow-hidden">
+              <img src={item.image} alt={item.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+              <span class="absolute top-3 left-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                {item.badge}
+              </span>
+            </div>
+            <div class="p-5">
+              <span class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1 block">{item.category}</span>
+              <h3 class="font-bold text-lg mb-2 text-slate-900 dark:text-white line-clamp-2">{item.title}</h3>
+              <p class="text-slate-600 dark:text-slate-400 text-xs line-clamp-3 leading-relaxed">{item.description}</p>
+            </div>
+          </div>
+          <div class="p-5 pt-0">
+            <a 
+              href={item.link} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="w-full bg-primary hover:bg-primary/95 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider inline-flex items-center justify-center gap-2 shadow-md shadow-primary/20 transition-all"
+            >
+              Ver na Loja <span class="material-symbols-outlined text-base">open_in_new</span>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </main>
+</Layout>

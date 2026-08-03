@@ -1,0 +1,280 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RecipeCard from '../components/RecipeCard.astro';
+import { getPosts, getCategories } from '../utils/wp';
+import { Image } from 'astro:assets';
+
+// Busca receitas e categorias no momento do build (SSG)
+const posts = await getPosts({ limit: 100 });
+const categories = await getCategories();
+
+// Formata data padrão brasileira
+function formatDate(dateStr: string) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+// Mapeia ícones e cores para categorias dinamicamente
+function getCategoryInfo(name: string) {
+  const norm = name.toLowerCase();
+  if (norm.includes('café') || norm.includes('manhã') || norm.includes('manha')) {
+    return { icon: 'coffee', color: 'text-orange-500 bg-orange-100 dark:bg-orange-900/30 border-orange-200' };
+  }
+  if (norm.includes('almoço') || norm.includes('almoco') || norm.includes('carne') || norm.includes('peixe')) {
+    return { icon: 'restaurant', color: 'text-red-500 bg-red-100 dark:bg-red-900/30 border-red-200' };
+  }
+  if (norm.includes('jantar') || norm.includes('massa') || norm.includes('sopa')) {
+    return { icon: 'nights_stay', color: 'text-blue-500 bg-blue-100 dark:bg-blue-900/30 border-blue-200' };
+  }
+  if (norm.includes('sobremesa') || norm.includes('doce') || norm.includes('bolo') || norm.includes('pudim')) {
+    return { icon: 'icecream', color: 'text-pink-500 bg-pink-100 dark:bg-pink-900/30 border-pink-200' };
+  }
+  return { icon: 'local_dining', color: 'text-primary bg-orange-50 dark:bg-primary/10 border-primary/20' };
+}
+
+// Receita em destaque (a primeira)
+const featuredPost = posts[0];
+const featuredMedia = featuredPost?._embedded?.['wp:featuredmedia']?.[0];
+const featuredImgUrl = featuredMedia?.source_url 
+                     || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?q=80&w=1200&auto=format&fit=crop';
+const featuredExcerpt = featuredPost?.excerpt?.rendered?.replace(/<[^>]*>/g, '')?.substring(0, 160)?.trim() + '...';
+
+// Tendências de hoje (próximas 3 receitas)
+const trendingPosts = posts.slice(1, 4);
+
+// Demais receitas da lista
+const latestPosts = posts.slice(4);
+---
+
+<Layout>
+  <!-- Hero Section (Receita em Destaque + Tendências) -->
+  {featuredPost && (
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div class="flex flex-col gap-8 lg:flex-row items-center lg:items-stretch">
+        <!-- Card Destaque Esquerdo -->
+        <div class="w-full lg:w-3/5 relative rounded-2xl overflow-hidden group min-h-[400px] shadow-lg border border-slate-100 dark:border-slate-800">
+          <div 
+            class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
+            style={`background-image: url('${featuredImgUrl}')`}
+          ></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6 sm:p-10 text-white">
+            <span class="bg-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 inline-block">
+              Receita em Destaque
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-black mb-4 leading-tight" set:html={featuredPost.title.rendered}></h1>
+            <p class="text-slate-200 text-base sm:text-lg mb-6 max-w-xl">{featuredExcerpt}</p>
+            <a 
+              href={`/receita/${featuredPost.slug}`} 
+              class="bg-primary hover:bg-primary/95 text-white px-8 py-4 rounded-xl font-bold inline-flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-primary/20 w-fit"
+            >
+              Ver Receita Completa <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tendências de Hoje (Direita) -->
+        <div class="w-full lg:w-2/5 flex flex-col gap-4">
+          <div class="bg-primary/10 dark:bg-primary/5 p-6 rounded-2xl border border-primary/20 flex-1 flex flex-col justify-between">
+            <div>
+              <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">trending_up</span>
+                Tendências de Hoje
+              </h2>
+              <div class="space-y-5">
+                {trendingPosts.map(p => {
+                  const media = p._embedded?.['wp:featuredmedia']?.[0];
+                  const imgUrl = media?.media_details?.sizes?.thumbnail?.source_url 
+                              || media?.source_url 
+                              || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?q=80&w=200&auto=format&fit=crop';
+                  return (
+                    <a class="flex gap-4 group items-center" href={`/receita/${p.slug}`}>
+                      <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-slate-200 border border-slate-100 dark:border-slate-800">
+                        <img 
+                          alt={p.title.rendered} 
+                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
+                          src={imgUrl}
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="flex-grow">
+                        <h3 class="font-bold group-hover:text-primary transition-colors text-slate-800 dark:text-slate-200 line-clamp-2 leading-snug" set:html={p.title.rendered}></h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
+                          <span class="material-symbols-outlined text-xs">schedule</span> {formatDate(p.date)}
+                        </p>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Navegar por Categorias -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" id="categorias">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl font-bold">Navegar por Categoria</h2>
+      <!-- Filtro de Busca Integrado no Layout -->
+      <div class="relative max-w-xs w-full">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+        <input 
+          id="recipe-search"
+          class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2 pl-9 pr-4 focus:outline-none focus:border-primary/50 text-sm" 
+          placeholder="Filtrar receitas..." 
+          type="search"
+        />
+      </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <button 
+        class="category-btn group flex flex-col items-center p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all hover:shadow-xl hover:shadow-primary/5 cursor-pointer text-center"
+        data-category="all"
+      >
+        <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-slate-500 dark:text-slate-300 text-3xl">grid_view</span>
+        </div>
+        <span class="font-bold">Todas as Receitas</span>
+      </button>
+      {categories.slice(0, 3).map(cat => {
+        const catInfo = getCategoryInfo(cat.name);
+        return (
+          <a 
+            href={`/categoria/${cat.slug}`}
+            class="group flex flex-col items-center p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all hover:shadow-xl hover:shadow-primary/5 cursor-pointer text-center"
+          >
+            <div class={`w-16 h-16 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform ${catInfo.color}`}>
+              <span class="material-symbols-outlined text-3xl">{catInfo.icon}</span>
+            </div>
+            <span class="font-bold text-slate-900 dark:text-white">{cat.name}</span>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- Seção de Últimas Receitas -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-3xl font-black">Últimas Receitas</h2>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="recipes-grid">
+      {posts.map(post => (
+        <RecipeCard post={post} />
+      ))}
+    </div>
+
+    <!-- Feedback de Busca Vazia -->
+    <div class="empty-state hidden text-center py-16 flex flex-col items-center gap-4" id="empty-state">
+      <span class="material-symbols-outlined text-slate-300 text-6xl">search_off</span>
+      <h3 class="text-2xl font-bold">Nenhuma receita encontrada</h3>
+      <p class="text-slate-500">Tente buscar por outros termos ou categorias.</p>
+    </div>
+  </section>
+
+  <!-- Newsletter Section matching template style -->
+  <section class="bg-primary/5 dark:bg-primary/10 py-16 sm:py-24 mt-12">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <span class="material-symbols-outlined text-primary text-5xl mb-6">mail_lock</span>
+      <h2 class="text-3xl sm:text-4xl font-black mb-4">Receba novas receitas no seu e-mail</h2>
+      <p class="text-slate-600 dark:text-slate-400 text-lg mb-8">Junte-se a mais de 50.000 cozinheiros amadores e receba semanalmente dicas e receitas exclusivas que simplificam sua rotina.</p>
+      <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+        <input class="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-4 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Seu melhor e-mail" required="" type="email"/>
+        <button class="bg-primary hover:bg-primary/95 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg shadow-primary/20 cursor-pointer" type="submit">
+          Inscrever-se
+        </button>
+      </form>
+      <p class="mt-4 text-xs text-slate-500">Respeitamos sua privacidade. Cancele a qualquer momento.</p>
+    </div>
+  </section>
+</Layout>
+
+<!-- Script de Busca e Filtro em Tempo Real -->
+<script>
+  function initFilters() {
+    const searchInput = document.getElementById('recipe-search') as HTMLInputElement | null;
+    const headerSearchInput = document.getElementById('header-search') as HTMLInputElement | null;
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const cards = document.querySelectorAll('.recipe-card');
+    const grid = document.getElementById('recipes-grid');
+    const emptyState = document.getElementById('empty-state');
+
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    function filterRecipes() {
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const categories = (card.getAttribute('data-categories') || '').split(',');
+        const title = card.getAttribute('data-title') || '';
+        const content = card.getAttribute('data-content') || '';
+        
+        const matchesCategory = activeCategory === 'all' || categories.includes(activeCategory);
+        const matchesSearch = title.includes(searchQuery) || content.includes(searchQuery);
+
+        if (matchesCategory && matchesSearch) {
+          (card as HTMLElement).style.display = 'block';
+          visibleCount++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+
+      if (visibleCount === 0) {
+        grid?.classList.add('hidden');
+        emptyState?.classList.remove('hidden');
+      } else {
+        grid?.classList.remove('hidden');
+        emptyState?.classList.add('hidden');
+      }
+    }
+
+    // Vincula a digitação na busca da página
+    searchInput?.addEventListener('input', (e) => {
+      searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      // Sincroniza com a busca do header
+      if (headerSearchInput) headerSearchInput.value = (e.target as HTMLInputElement).value;
+      filterRecipes();
+    });
+
+    // Vincula a digitação na busca do cabeçalho (header)
+    headerSearchInput?.addEventListener('input', (e) => {
+      searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      // Sincroniza com a busca da página
+      if (searchInput) searchInput.value = (e.target as HTMLInputElement).value;
+      filterRecipes();
+    });
+
+    // Vincula o clique nas categorias
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        categoryButtons.forEach(b => {
+          b.classList.remove('border-primary', 'bg-primary/5', 'text-primary');
+          b.classList.add('border-slate-200', 'dark:border-slate-700', 'bg-white', 'dark:bg-slate-800');
+        });
+        
+        btn.classList.remove('border-slate-200', 'dark:border-slate-700', 'bg-white', 'dark:bg-slate-800');
+        btn.classList.add('border-primary', 'bg-primary/5', 'text-primary');
+
+        activeCategory = btn.getAttribute('data-category') || 'all';
+        filterRecipes();
+      });
+    });
+
+    // Ativa por padrão o estilo do botão "Todas as Receitas"
+    const allBtn = document.querySelector('[data-category="all"]');
+    if (allBtn) {
+      allBtn.classList.remove('border-slate-200', 'dark:border-slate-700', 'bg-white', 'dark:bg-slate-800');
+      allBtn.classList.add('border-primary', 'bg-primary/5', 'text-primary');
+    }
+  }
+
+  // Inicializa na primeira carga e após transições de página
+  initFilters();
+  document.addEventListener('astro:after-swap', initFilters);
+</script>

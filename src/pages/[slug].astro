@@ -1,0 +1,599 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getPosts, getPostBySlug } from '../utils/wp';
+import { parseRecipeHtml, parsePublicHtml } from '../utils/recipeParser';
+import { Image } from 'astro:assets';
+
+// getStaticPaths é obrigatório no Astro para rotas dinâmicas SSG na raiz /[slug]
+export async function getStaticPaths() {
+  const posts = await getPosts({ limit: 100 });
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+
+// Caso não tenha sido passado como prop, busca da API
+const activePost = post || await getPostBySlug(Astro.params.slug);
+
+if (!activePost) {
+  return Astro.redirect('/404');
+}
+
+// Faz o parsing das informações limpas do HTML do WordPress
+let recipe = parseRecipeHtml(activePost.content.rendered);
+
+// FALLBACK SCRAPER: Se a receita veio vazia do REST API (comum em posts do Elementor/ACF/Tailwind)
+if (recipe.ingredients.length === 0 && recipe.instructions.length === 0) {
+  try {
+    console.log(`[HEADLESS FALLBACK] Buscando HTML público de: ${activePost.link}`);
+    const response = await fetch(activePost.link);
+    if (response.ok) {
+      const publicHtml = await response.text();
+      recipe = parsePublicHtml(publicHtml);
+      console.log(`[HEADLESS FALLBACK] Sucesso! Parsed ${recipe.ingredients.length} ingredientes e ${recipe.instructions.length} passos.`);
+    }
+  } catch (error) {
+    console.error('Erro no fallback scraper:', error);
+  }
+}
+
+// Imagem Destacada
+const media = activePost._embedded?.['wp:featuredmedia']?.[0];
+const imageUrl = media?.source_url || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?q=80&w=800&auto=format&fit=crop';
+
+// Categorias
+const categories = activePost._embedded?.['wp:term']?.[0] || [];
+const primaryCategory = categories[0]?.name || 'Receita';
+const primaryCategorySlug = categories[0]?.slug || '';
+
+// Gera a data formatada
+const formattedDate = new Date(activePost.date).toLocaleDateString('pt-BR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+
+// Busca 2 posts sugeridos para a lateral
+const allPosts = await getPosts({ limit: 10 });
+const relatedPosts = allPosts
+  .filter(p => p.id !== activePost.id)
+  .slice(0, 2);
+
+// Calcula tempo de preparo total
+const timeMinutes = recipe.prepTime ? parseInt(recipe.prepTime.replace(/\D/g, '')) || 15 : 15;
+
+// Schema JSON-LD para Google Rich Snippets (Recipe & Breadcrumb)
+const cleanTitle = activePost.title.rendered.replace(/<[^>]*>/g, '');
+const cleanDesc = (recipe.description || activePost.excerpt.rendered.replace(/<[^>]*>/g, '')).trim();
+
+const recipeSchema = {
+  "@context": "https://schema.org/",
+  "@type": "Recipe",
+  "name": cleanTitle,
+  "image": [imageUrl],
+  "author": {
+    "@type": "Person",
+    "name": "Chef Mary Rodrigues"
+  },
+  "datePublished": activePost.date,
+  "description": cleanDesc,
+  "prepTime": `PT${timeMinutes}M`,
+  "cookTime": "PT15M",
+  "totalTime": `PT${timeMinutes + 15}M`,
+  "keywords": primaryCategory,
+  "recipeYield": `${recipe.servings || 2} porções`,
+  "recipeCategory": primaryCategory,
+  "recipeCuisine": "Brasileira",
+  "nutrition": {
+    "@type": "NutritionInformation",
+    "calories": "380 calories"
+  },
+  "recipeIngredient": recipe.ingredients.map(ing => ing.originalText),
+  "recipeInstructions": recipe.instructions.map((step, idx) => ({
+    "@type": "HowToStep",
+    "name": `Passo ${idx + 1}`,
+    "text": step
+  })),
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "128"
+  }
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://descomplicandoreceitas.com.br"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": primaryCategory,
+      "item": primaryCategorySlug ? `https://descomplicandoreceitas.com.br/categoria/${primaryCategorySlug}` : "https://descomplicandoreceitas.com.br/#categorias"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": cleanTitle,
+      "item": `https://descomplicandoreceitas.com.br/${activePost.slug}`
+    }
+  ]
+};
+---
+
+<Layout 
+  title={`${activePost.title.rendered} - Descomplicando Receitas`}
+  description={cleanDesc}
+  image={imageUrl}
+>
+  <!-- Schema.org JSON-LD scripts para Google Search Console Rich Results -->
+  <script type="application/ld+json" set:html={JSON.stringify(recipeSchema)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
+
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    <article>
+      <!-- Breadcrumb Navigation matching WordPress permalinks -->
+      <div class="mb-8">
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-4">
+          <a class="hover:text-primary transition-colors" href="/">Home</a>
+          <span class="material-symbols-outlined text-sm">chevron_right</span>
+          {primaryCategorySlug ? (
+            <a class="hover:text-primary transition-colors" href={`/categoria/${primaryCategorySlug}`}>{primaryCategory}</a>
+          ) : (
+            <span class="hover:text-primary transition-colors">{primaryCategory}</span>
+          )}
+          <span class="material-symbols-outlined text-sm">chevron_right</span>
+          <span class="text-primary font-medium truncate max-w-[200px] sm:max-w-none" set:html={activePost.title.rendered}></span>
+        </nav>
+        
+        <h1 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-slate-100 mb-4 leading-tight" set:html={activePost.title.rendered}></h1>
+        
+        <div class="flex flex-wrap items-center gap-6 text-sm text-slate-600 dark:text-slate-400">
+          <div class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-primary text-xl">star</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100">4.9</span>
+            <span>(voto dos leitores)</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-slate-400 text-xl">schedule</span>
+            <span>Publicado em {formattedDate}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Image matching template -->
+      <div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 shadow-xl border border-slate-100 dark:border-slate-800">
+        <img 
+          src={imageUrl} 
+          alt={activePost.title.rendered} 
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- Ficha Técnica Widget Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center">
+          <span class="material-symbols-outlined text-primary mb-2 text-2xl">timer</span>
+          <span class="text-xs uppercase tracking-wider text-slate-500 font-bold">Preparo</span>
+          <span class="text-xl font-bold">{recipe.prepTime || `${timeMinutes} min`}</span>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center">
+          <span class="material-symbols-outlined text-primary mb-2 text-2xl">cooking</span>
+          <span class="text-xs uppercase tracking-wider text-slate-500 font-bold">Cozimento</span>
+          <span class="text-xl font-bold">Prático</span>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center">
+          <span class="material-symbols-outlined text-primary mb-2 text-2xl">restaurant</span>
+          <span class="text-xs uppercase tracking-wider text-slate-500 font-bold">Porções</span>
+          <span id="display-servings" class="text-xl font-bold">{recipe.servings || 2} Porções</span>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center">
+          <span class="material-symbols-outlined text-primary mb-2 text-2xl">local_dining</span>
+          <span class="text-xs uppercase tracking-wider text-slate-500 font-bold">Categoria</span>
+          <span class="text-xl font-bold">{primaryCategory}</span>
+        </div>
+      </div>
+
+      <!-- Content Layout Grid matching template -->
+      <div class="grid lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2">
+          <!-- Ingredientes Section -->
+          <section class="mb-12">
+            <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
+              <h2 class="text-2xl font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl">shopping_basket</span>
+                Ingredientes
+              </h2>
+              
+              <!-- Portion Scaler Widget -->
+              <div class="flex items-center gap-3 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                <span class="text-xs font-bold text-slate-500">Porções:</span>
+                <div class="flex items-center gap-2">
+                  <button type="button" id="portion-dec" class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-600 dark:text-slate-300 hover:bg-primary hover:text-white cursor-pointer transition-colors">-</button>
+                  <span id="portion-val" class="font-bold text-slate-800 dark:text-slate-100 text-sm px-1">{recipe.servings || 2}</span>
+                  <button type="button" id="portion-inc" class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-600 dark:text-slate-300 hover:bg-primary hover:text-white cursor-pointer transition-colors">+</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lista de Ingredientes com Checkboxes Interativas -->
+            <div class="space-y-3">
+              {recipe.ingredients.map((ing, idx) => (
+                <label class="flex items-center p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 cursor-pointer hover:border-primary/50 transition-colors shadow-sm">
+                  <input class="w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary bg-transparent mr-4 cursor-pointer" type="checkbox"/>
+                  <span class="text-slate-700 dark:text-slate-300 text-base">
+                    {ing.amount !== null && (
+                      <strong 
+                        class="ing-amount font-bold text-slate-900 dark:text-white mr-1" 
+                        data-base-amount={ing.amount}
+                      >
+                        {ing.amount.toString().replace('.', ',')}
+                      </strong>
+                    )}
+                    {ing.unit} {ing.name}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </section>
+
+          <!-- Modo de Preparo Section -->
+          <section class="mb-12">
+            <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+              <h2 class="text-2xl font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl">format_list_numbered</span>
+                Modo de Preparo
+              </h2>
+
+              <!-- Botão Modo Cozinha -->
+              {recipe.instructions.length > 0 && (
+                <button 
+                  id="start-kitchen-mode"
+                  class="bg-primary/10 text-primary hover:bg-primary hover:text-white px-4 py-2.5 rounded-full font-bold text-xs flex items-center gap-2 transition-all cursor-pointer"
+                >
+                  <span class="material-symbols-outlined text-lg">kitchen</span>
+                  Modo Cozinha
+                </button>
+              )}
+            </div>
+
+            <!-- Linha do Tempo das Instruções -->
+            <div class="space-y-8 relative before:absolute before:left-5 before:top-2 before:bottom-2 before:w-0.5 before:bg-primary/10">
+              {recipe.instructions.map((step, index) => (
+                <div class="relative pl-12 group">
+                  <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+                    {index + 1}
+                  </div>
+                  <h3 class="text-lg font-bold mb-2 text-slate-800 dark:text-slate-200">Passo {index + 1}</h3>
+                  <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">{step}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <!-- Sidebar Lateral matching template -->
+        <aside class="space-y-8">
+          <!-- Author Box -->
+          <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-primary">
+                <img 
+                  alt="Avatar da Chef" 
+                  class="w-full h-full object-cover" 
+                  src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=200&auto=format&fit=crop"
+                />
+              </div>
+              <div>
+                <h4 class="font-bold text-lg text-slate-800 dark:text-slate-100">Chef Mary Rodrigues</h4>
+                <span class="text-xs text-primary font-bold uppercase tracking-widest">Especialista Gourmet</span>
+              </div>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Mary Rodrigues traz receitas práticas e simplificadas há mais de 10 anos, focando em comida afetiva com toque profissional para o seu dia a dia.
+            </p>
+          </div>
+
+          <!-- Dicas da Chef (se houver no parser) -->
+          {recipe.tips.length > 0 && (
+            <div class="bg-primary/5 p-6 rounded-2xl border border-primary/10">
+              <h4 class="font-bold mb-4 flex items-center gap-2 text-slate-800 dark:text-slate-100">
+                <span class="material-symbols-outlined text-primary">lightbulb</span>
+                Dicas Importantes
+              </h4>
+              <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400 list-disc list-inside">
+                {recipe.tips.map(tip => <li>{tip}</li>)}
+              </ul>
+            </div>
+          )}
+
+          <!-- Informações Nutricionais -->
+          <div class="bg-primary/5 p-6 rounded-2xl border border-primary/10">
+            <h4 class="font-bold mb-4 flex items-center gap-2 text-slate-800 dark:text-slate-100">
+              <span class="material-symbols-outlined text-primary">nutrition</span>
+              Info Nutricional (Aprox.)
+            </h4>
+            <div class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+              {recipe.nutrition.length > 0 ? (
+                recipe.nutrition.map(item => (
+                  <div class="flex justify-between border-b border-primary/10 pb-2 last:border-0 last:pb-0">
+                    <span>{item.split(':')[0]}</span>
+                    <span class="font-bold">{item.split(':')[1] || 'Sim'}</span>
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div class="flex justify-between border-b border-primary/10 pb-2">
+                    <span>Calorias</span>
+                    <span class="font-bold">380 kcal</span>
+                  </div>
+                  <div class="flex justify-between border-b border-primary/10 pb-2">
+                    <span>Proteínas</span>
+                    <span class="font-bold">12g</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Carboidratos</span>
+                    <span class="font-bold">25g</span>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          <!-- Sugestões Relacionadas -->
+          {relatedPosts.length > 0 && (
+            <div>
+              <h4 class="font-bold mb-4 text-lg text-slate-800 dark:text-slate-100">Sugestões de Hoje</h4>
+              <div class="space-y-4">
+                {relatedPosts.map(p => {
+                  const media = p._embedded?.['wp:featuredmedia']?.[0];
+                  const imgUrl = media?.source_url || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?q=80&w=200&auto=format&fit=crop';
+                  return (
+                    <a class="group flex gap-3 items-center" href={`/${p.slug}`}>
+                      <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-slate-200 border border-slate-100 dark:border-slate-800">
+                        <img 
+                          alt={p.title.rendered} 
+                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
+                          src={imgUrl}
+                          loading="lazy"
+                        />
+                      </div>
+                      <div>
+                        <h5 class="font-bold text-sm group-hover:text-primary transition-colors text-slate-800 dark:text-slate-200 line-clamp-2 leading-snug" set:html={p.title.rendered}></h5>
+                        <p class="text-xs text-slate-500 mt-1">Prático • 15 min</p>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </aside>
+      </div>
+    </article>
+  </main>
+
+  <!-- MODAL: MODO COZINHA (Design estilo App Nativo) -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-6 transition-all duration-300 hidden" id="kitchen-modal">
+    <!-- Backdrop de Fundo -->
+    <div class="absolute inset-0 bg-black/90 backdrop-blur-md kitchen-modal-backdrop"></div>
+    
+    <!-- Corpo do App Modal -->
+    <div class="relative bg-white dark:bg-slate-900 w-full h-screen md:h-[550px] md:max-w-2xl md:rounded-2xl border-none md:border border-slate-200 dark:border-slate-800 shadow-none md:shadow-2xl flex flex-col overflow-hidden z-10">
+      
+      <!-- Stories Style Progress Bar -->
+      <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 overflow-hidden">
+        <div class="h-full bg-primary w-0 transition-all duration-300 ease-out" id="kitchen-progress"></div>
+      </div>
+
+      <!-- Cabeçalho do App -->
+      <header class="p-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-start gap-4">
+        <div class="flex flex-col gap-2 flex-grow">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="bg-primary/10 text-primary text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md">
+              🧑‍🍳 Modo Cozinha
+            </span>
+            <div class="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50 px-2 py-0.5 rounded-full text-[10px] font-bold" id="wakelock-status">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Tela Ativa
+            </div>
+          </div>
+          <h2 class="text-slate-900 dark:text-slate-100 text-lg font-black leading-tight tracking-tight line-clamp-1" set:html={activePost.title.rendered}></h2>
+        </div>
+        <button class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg transition-colors cursor-pointer" id="close-kitchen" aria-label="Fechar Modo Cozinha">
+          <span class="material-symbols-outlined text-2xl block">close</span>
+        </button>
+      </header>
+
+      <!-- Área de Passos do Slider (Touch Gesture Sensitive) -->
+      <div class="flex-grow p-6 md:p-10 flex items-center justify-center overflow-y-auto kitchen-step-container">
+        <div class="text-center flex flex-col gap-5 max-w-full">
+          <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest" id="kitchen-step-num">Passo 1 de 5</span>
+          <p class="text-xl md:text-3xl font-black text-slate-800 dark:text-slate-100 leading-relaxed font-display" id="kitchen-step-content">Texto do passo...</p>
+        </div>
+      </div>
+
+      <!-- Rodapé do App -->
+      <footer class="p-5 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center gap-4 bg-slate-50/50 dark:bg-slate-950/20 pb-5 md:pb-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
+        <button class="flex-grow max-w-[150px] py-3 text-sm font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all cursor-pointer" id="kitchen-prev">
+          &larr; Anterior
+        </button>
+        <button class="flex-grow max-w-[150px] py-3 text-sm font-bold rounded-xl bg-primary hover:bg-primary/95 text-white shadow-lg shadow-primary/10 transition-all cursor-pointer" id="kitchen-next">
+          Próximo &rarr;
+        </button>
+      </footer>
+    </div>
+  </div>
+</Layout>
+
+<!-- Script interativo para Portion Scaler, Wake Lock, Stories Progress e Gestos Swipe -->
+<script is:inline define:vars={{ instructions: recipe.instructions }}>
+  let currentStep = 0;
+  let wakeLock = null;
+
+  function initRecipeInteractive() {
+    // PORTION SCALER
+    const btnDec = document.getElementById('portion-dec');
+    const btnInc = document.getElementById('portion-inc');
+    const portVal = document.getElementById('portion-val');
+    const servDisplay = document.getElementById('display-servings');
+    const amountElements = document.querySelectorAll('.ing-amount');
+
+    if (btnDec && btnInc && portVal) {
+      const baseServings = parseInt(portVal.innerText) || 2;
+      let currentServings = baseServings;
+
+      function updatePortions(newServings) {
+        if (newServings < 1) return;
+        currentServings = newServings;
+        portVal.innerText = currentServings;
+        
+        if (servDisplay) {
+          servDisplay.innerText = `${currentServings} Porções`;
+        }
+
+        const factor = currentServings / baseServings;
+
+        amountElements.forEach(el => {
+          const baseAmount = parseFloat(el.getAttribute('data-base-amount'));
+          if (!isNaN(baseAmount)) {
+            const scaled = baseAmount * factor;
+            const formatted = Number(scaled.toFixed(2)).toString().replace('.', ',');
+            el.innerText = formatted;
+          }
+        });
+      }
+
+      btnDec.onclick = () => updatePortions(currentServings - 1);
+      btnInc.onclick = () => updatePortions(currentServings + 1);
+    }
+
+    // MODO COZINHA
+    const startKitchenBtn = document.getElementById('start-kitchen-mode');
+    const closeKitchenBtn = document.getElementById('close-kitchen');
+    const modal = document.getElementById('kitchen-modal');
+    const stepNum = document.getElementById('kitchen-step-num');
+    const stepContent = document.getElementById('kitchen-step-content');
+    const prevBtn = document.getElementById('kitchen-prev');
+    const nextBtn = document.getElementById('kitchen-next');
+    const wakelockStatus = document.getElementById('wakelock-status');
+    const progressFill = document.getElementById('kitchen-progress');
+    const stepContainer = document.querySelector('.kitchen-step-container');
+
+    if (!startKitchenBtn || !modal || !instructions.length) return;
+
+    function renderStep() {
+      if (stepNum) stepNum.innerText = `Passo ${currentStep + 1} de ${instructions.length}`;
+      if (stepContent) stepContent.innerText = instructions[currentStep];
+
+      if (progressFill) {
+        const percentage = ((currentStep + 1) / instructions.length) * 100;
+        progressFill.style.width = `${percentage}%`;
+      }
+
+      if (prevBtn) prevBtn.disabled = currentStep === 0;
+      if (nextBtn) {
+        if (currentStep === instructions.length - 1) {
+          nextBtn.innerText = 'Concluir';
+        } else {
+          nextBtn.innerText = 'Próximo →';
+        }
+      }
+    }
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    if (stepContainer) {
+      stepContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      stepContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      }, { passive: true });
+    }
+
+    function handleSwipe() {
+      const minDistance = 50;
+      const diff = touchEndX - touchStartX;
+      if (diff < -minDistance && currentStep < instructions.length - 1) {
+        currentStep++;
+        renderStep();
+      } else if (diff > minDistance && currentStep > 0) {
+        currentStep--;
+        renderStep();
+      }
+    }
+
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+          if (wakelockStatus) wakelockStatus.classList.remove('hidden');
+        } else {
+          if (wakelockStatus) wakelockStatus.classList.add('hidden');
+        }
+      } catch (err) {
+        console.error('Falha Wake Lock:', err.message);
+        if (wakelockStatus) wakelockStatus.classList.add('hidden');
+      }
+    }
+
+    function releaseWakeLock() {
+      if (wakeLock) {
+        wakeLock.release();
+        wakeLock = null;
+      }
+    }
+
+    startKitchenBtn.onclick = () => {
+      currentStep = 0;
+      renderStep();
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      requestWakeLock();
+    };
+
+    closeKitchenBtn.onclick = () => {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      releaseWakeLock();
+    };
+
+    if (prevBtn) {
+      prevBtn.onclick = () => {
+        if (currentStep > 0) {
+          currentStep--;
+          renderStep();
+        }
+      };
+    }
+
+    if (nextBtn) {
+      nextBtn.onclick = () => {
+        if (currentStep < instructions.length - 1) {
+          currentStep++;
+          renderStep();
+        } else {
+          modal.classList.add('hidden');
+          document.body.style.overflow = '';
+          releaseWakeLock();
+        }
+      };
+    }
+  }
+
+  initRecipeInteractive();
+  document.addEventListener('astro:after-swap', initRecipeInteractive);
+</script>

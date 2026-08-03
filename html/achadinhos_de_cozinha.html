@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Achadinhos - Curadoria Premium de Cozinha</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ec5b13",
+              "background-light": "#f8f6f6",
+              "background-dark": "#221610",
+            },
+            fontFamily: {
+              "display": ["Public Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-6 py-4 lg:px-20 bg-background-light dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl">restaurant_menu</span>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">Achadinhos</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-medium" href="#">Cozinha</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-medium" href="#">Organização</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-medium" href="#">Destaques</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="hidden sm:flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-4 py-2 w-full max-w-xs border border-transparent focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-slate-400 text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-400" placeholder="Buscar produtos..." type="text"/>
+</label>
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="Foto de perfil da curadora sorrindo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCe8x1Qspwlfg4iO0sFq6vvQCASXoDgln6uK5nAX-T6t63lyr_XugVYCpLDYgLB_rBNHGbl9Gc5rFDN7Xrrnew97yyEbcfLN2d-pp40xbszLgVPxUVImH20euMAB9fmn0r9hSUpD7Gyte_I8sFD_6fKlzIimFr_IdU4gojAK-Pk1pVkiT64aMC3YD7u77_WWiJcdFW4_hvjfbWX2kk-bPZX5FrG9Ri-Ah2cWLIGf9DsB1rI2tGCZuiRf4p5-te1N7OrugFfG2-cjQ");'></div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
+<!-- Hero Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
+<div class="flex flex-col gap-3 max-w-2xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">stars</span> Seleção do Mês
+                </div>
+<h1 class="text-slate-900 dark:text-white text-4xl lg:text-5xl font-black leading-tight tracking-tighter">Achadinhos de Cozinha</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg">Curadoria premium de utensílios e gadgets testados por nós para facilitar sua rotina gastronômica.</p>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="flex gap-3 mb-8 overflow-x-auto pb-2 no-scrollbar">
+<button class="flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white text-sm font-bold whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">grid_view</span> Todos
+            </button>
+<button class="flex items-center gap-2 px-5 py-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-semibold whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-sm">bakery_dining</span> Baking
+            </button>
+<button class="flex items-center gap-2 px-5 py-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-semibold whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-sm">skillet</span> Cooking
+            </button>
+<button class="flex items-center gap-2 px-5 py-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-semibold whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-sm">inventory_2</span> Organização
+            </button>
+</div>
+<!-- Product Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+<!-- Product Item 1 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all duration-300">
+<div class="relative w-full aspect-square overflow-hidden">
+<div class="absolute top-3 right-3 z-10">
+<span class="bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded uppercase">Mais Vendido</span>
+</div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover group-hover:scale-105 transition-transform duration-500" data-alt="Batedor de ovos ergonômico em aço inox" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD439aq2LrOn5Kr-nezWM-KxTbmKyhdfLHhThZPSucRevl0-OC39t9eeeozzTnMcNmo2V8Pk3_R3ohPiXUS0MFj9c8MvbTLgJ7XR9c7cjugSaZtWrDT5_2ziTPvwidxjBmgF6T4jHDVbdwVqBxVrn3B8bdQjIjoZLxtTBEJum0-fsS46ch88gPZy0fROX9lF48HaKWVJZGTzKbgTmwjwx3yo3qyvdguFVEYyyfs8KfjP68zFDaQsm2DIp6mAzuJ8eL3-Tr_V0iQvA");'></div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg group-hover:text-primary transition-colors leading-snug">Batedor Ergonômico</h3>
+<span class="text-primary font-bold">R$ 45,90</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-6 flex-1 italic">"O cabo em silicone evita que a mão escorregue, essencial para bater claras em neve perfeitas sem esforço."</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">shopping_cart</span> Comprar
+                        </button>
+</div>
+</div>
+</div>
+<!-- Product Item 2 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all duration-300">
+<div class="relative w-full aspect-square overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover group-hover:scale-105 transition-transform duration-500" data-alt="Organizador de temperos giratório em madeira" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCDtJwrcAe0IRPi1DaQ6v9iU1_jLo1doUI5BZTzfqdUVyTUptVJcYTlPTK8hKLZkJQJZRxNxe-tKDAqC2HOeQY2qvQxT2-Z5BJNz_sthQJY9QR_z7nM7gcnhXUvSYEwuIUx9Mf6Bx1gPQ68aQdONWj_Pt7Z8PNxycQisjEd23FZp1aL6321Uht0KD8GDhLUYDthOUARPbtbXCLRTTb1FlUh3OSUi5SOTSLprGxgp8-EXNQrvHXzMEo80O0CL4U3wL0d_Oi66XGzpQ");'></div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg group-hover:text-primary transition-colors leading-snug">Porta-Temperos 360°</h3>
+<span class="text-primary font-bold">R$ 89,00</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-6 flex-1 italic">"Gira suavemente e economiza um espaço absurdo no armário. Visual clean que combina com qualquer cozinha."</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">shopping_cart</span> Ver Preço
+                        </button>
+</div>
+</div>
+</div>
+<!-- Product Item 3 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all duration-300">
+<div class="relative w-full aspect-square overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover group-hover:scale-105 transition-transform duration-500" data-alt="Fritadeira de ar digital moderna cor preta" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDhwFmiHcSeAGt0_Bm-b53FvCncV44t64MuSaU3rbmE9_zCshE7TAhoxpECvymDlry9Ouibod5tfxnXAbGkMOpGMCQFoTkWiA2-O9_t2TF5fNrcvUJd5Ucsm8261AY81VrA-7MCCW89jkcMCWgslUqqnKjKVvrYrVg2TfLj-vSs7jpr9Kn9CpSr1bLqyhCI3glAQihOYG6NrCPmvbpoOMe6ZQBGJG8aIYJGIogDxAn0cGNUMg6MOqkw9QpWRsKzNS9Yh8siQte21A");'></div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg group-hover:text-primary transition-colors leading-snug">Air Fryer Max Pro</h3>
+<span class="text-primary font-bold">R$ 450,00</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-6 flex-1 italic">"O cesto quadrado permite colocar mais comida que as redondas tradicionais. Silenciosa e super potente."</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">shopping_cart</span> Comprar
+                        </button>
+</div>
+</div>
+</div>
+<!-- Product Item 4 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all duration-300">
+<div class="relative w-full aspect-square overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover group-hover:scale-105 transition-transform duration-500" data-alt="Conjunto de facas de cozinha profissionais" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCzKa_O7cU9cf7c7NxWFao3Y2boI0olmkNVmaD6K4fdgreTXk81xkDv7GT8-n3RG1GiI6B3QZAl_-F93jZUX402Vrie2hT82eT1IFq4zQ4AhudG_NV_tvv7q-cvcwji6WfCaKN21YDOsEaFzb9QW0Eqn_12IHHBg1FeOAw_e-eFTfU2r8vjoO9J9kcG83uf0aiMSBT3n2L6Euzb7r1noMr9888fzYb945OrvDNgKixe7PX8M7i2u6s3nQ9irHRE18F_82Df6BM2yQ");'></div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg group-hover:text-primary transition-colors leading-snug">Chef Set Titanium</h3>
+<span class="text-primary font-bold">R$ 120,00</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-6 flex-1 italic">"Corte preciso e fio que dura meses. O revestimento antiaderente facilita muito na hora de picar vegetais."</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">shopping_cart</span> Comprar
+                        </button>
+</div>
+</div>
+</div>
+<!-- Product Item 5 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all duration-300">
+<div class="relative w-full aspect-square overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover group-hover:scale-105 transition-transform duration-500" data-alt="Potes herméticos de vidro com tampa de bambu" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDBtMLxeDDxbbDuGPDU5JUuKZt13lVPTuKN1d6ZwpckNU92lunWzF773V0_8BXoUOHa9SMfyfKjWWu969b6NjWX6NtgjNrp5iWL2a2ZLLWXxTcDJytp4hC1JhAixCtFON04Y6Pdhc9WfNusdp25dF4hqWabA-FU6goshqkmEw0IhusIg0FCFFl9OOCQqH_B-SvAYHVcwCxf9xNtq1Sb_Cz7zZp-RMSUf__FgbMtLMWmMi36cCqaeG4fzR8O3U4EkLgmFE82Drtqxw");'></div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg group-hover:text-primary transition-colors leading-snug">Kit Potes Herméticos</h3>
+<span class="text-primary font-bold">R$ 159,00</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-6 flex-1 italic">"Mantêm os alimentos crocantes por muito mais tempo. A tampa de bambu dá um charme rústico à bancada."</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">shopping_cart</span> Comprar
+                        </button>
+</div>
+</div>
+</div>
+<!-- Product Item 6 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all duration-300">
+<div class="relative w-full aspect-square overflow-hidden">
+<div class="absolute top-3 right-3 z-10">
+<span class="bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase">Favorito da Chef</span>
+</div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover group-hover:scale-105 transition-transform duration-500" data-alt="Moedor de pimenta e sal automático" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBGMwY2corcwdjPsrk9Sqiolt8TpnhL4_vYlZyNUxokwzhIebmNHRVz3GVEYXMFjJVm2PL_RIBRhOatQtxXfzMeAWimN8NxE0gK6y-nbhRD3yUOjet6h2yifzOzVANimnhVI04UuN8clJIY0PxKDSzx_q7hUnoYBN_uHKGuZUdF8OkSFyqVVtX4brchLPxUGI3CzrzDCMDrY3OdqxBZI2uecrxkyN5PhnyReIjOqt8S5JU9wW_Nbr88Hbr8HtzVXq0x9eOjF7jnbA");'></div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg group-hover:text-primary transition-colors leading-snug">Moedor One-Hand</h3>
+<span class="text-primary font-bold">R$ 67,00</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-6 flex-1 italic">"Perfeito para temperar enquanto mexe a panela com a outra mão. Tem ajuste de moagem fino a grosso."</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">shopping_cart</span> Comprar
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Affiliate Disclosure -->
+<div class="mt-20 p-8 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 text-center">
+<div class="flex justify-center mb-4 text-primary">
+<span class="material-symbols-outlined text-4xl">verified_user</span>
+</div>
+<h4 class="text-slate-900 dark:text-white font-bold text-lg mb-2">Transparência em primeiro lugar</h4>
+<p class="text-slate-600 dark:text-slate-400 text-sm max-w-2xl mx-auto leading-relaxed">
+                Nós participamos de programas de afiliados. Ao clicar em nossos links e realizar uma compra, podemos receber uma pequena comissão. Isso não altera o preço para você e nos ajuda a manter este projeto e a testar novos produtos para trazer as melhores recomendações. Recomendamos apenas o que realmente aprovamos em nossa cozinha.
+            </p>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-900 text-slate-400 py-12 px-6 lg:px-20">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+<div>
+<div class="flex items-center gap-3 text-white mb-6">
+<span class="material-symbols-outlined text-2xl text-primary">restaurant_menu</span>
+<span class="text-xl font-bold">Achadinhos</span>
+</div>
+<p class="text-sm leading-relaxed">Sua curadoria definitiva para uma cozinha prática, moderna e funcional. Transformando o ato de cozinhar em puro prazer.</p>
+</div>
+<div>
+<h5 class="text-white font-bold mb-6 uppercase tracking-widest text-xs">Links Rápidos</h5>
+<ul class="flex flex-col gap-3 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Sobre Nós</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Como Testamos</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Política de Privacidade</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contato</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-white font-bold mb-6 uppercase tracking-widest text-xs">Newsletter</h5>
+<p class="text-sm mb-4">Receba novos achadinhos direto no seu e-mail.</p>
+<div class="flex gap-2">
+<input class="bg-slate-800 border-none rounded-lg px-4 py-2 text-sm flex-1 focus:ring-1 focus:ring-primary" placeholder="Seu melhor e-mail" type="email"/>
+<button class="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm">Assinar</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+<p>© 2024 Achadinhos Cozinha. Todos os direitos reservados.</p>
+<div class="flex gap-6">
+<a class="hover:text-white transition-colors" href="#">Instagram</a>
+<a class="hover:text-white transition-colors" href="#">TikTok</a>
+<a class="hover:text-white transition-colors" href="#">Pinterest</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

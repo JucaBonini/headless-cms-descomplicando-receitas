@@ -1,0 +1,126 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RecipeCard from '../components/RecipeCard.astro';
+import { getPosts } from '../utils/wp';
+
+// Busca todas as receitas no momento do build (SSG) para filtragem rápida no cliente e servidor
+const allPosts = await getPosts({ limit: 100 });
+---
+
+<Layout 
+  title="Buscar Receitas - Descomplicando Receitas"
+  description="Pesquise por ingredientes, nomes de pratos ou categorias em nosso acervo de receitas descomplicadas."
+>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Search Bar Hero -->
+    <div class="max-w-2xl mx-auto text-center mb-12">
+      <h1 class="text-3xl sm:text-4xl font-black mb-4">O que você quer cozinhar hoje?</h1>
+      <p class="text-slate-600 dark:text-slate-400 mb-8">Digite o nome da receita, ingrediente ou tipo de prato abaixo.</p>
+      
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-2xl">search</span>
+        <input 
+          type="search" 
+          id="search-input"
+          placeholder="Ex: bolo de cenoura, frango, airfryer..." 
+          class="w-full bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-2xl py-4 pl-12 pr-12 text-lg shadow-lg focus:outline-none focus:border-primary transition-all text-slate-900 dark:text-slate-100"
+        />
+        <button id="clear-search" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 hidden">
+          <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="mb-6 flex justify-between items-center">
+      <h2 class="text-xl font-bold text-slate-800 dark:text-slate-200">
+        <span id="results-count">{allPosts.length}</span> receitas encontradas
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="search-grid">
+      {allPosts.map(post => (
+        <RecipeCard post={post} />
+      ))}
+    </div>
+
+    <!-- Estado vazio -->
+    <div id="no-results" class="hidden text-center py-16 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700">
+      <span class="material-symbols-outlined text-5xl text-slate-400 mb-4 block">search_off</span>
+      <h3 class="text-xl font-bold mb-2">Nenhuma receita encontrada</h3>
+      <p class="text-slate-500 mb-6">Tente pesquisar com outros termos ou palavras-chave simples.</p>
+    </div>
+  </main>
+
+  <script is:inline>
+    function initSearchPage() {
+      const searchInput = document.getElementById('search-input');
+      const clearBtn = document.getElementById('clear-search');
+      const cards = document.querySelectorAll('.recipe-card');
+      const resultsCount = document.getElementById('results-count');
+      const noResults = document.getElementById('no-results');
+      const searchGrid = document.getElementById('search-grid');
+
+      if (!searchInput) return;
+
+      // Pega o termo ?q= da URL caso venha de outro link
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryFromUrl = urlParams.get('q') || '';
+      if (queryFromUrl) {
+        searchInput.value = queryFromUrl;
+      }
+
+      function filterRecipes() {
+        const query = searchInput.value.toLowerCase().trim();
+        let count = 0;
+
+        if (clearBtn) {
+          clearBtn.classList.toggle('hidden', query.length === 0);
+        }
+
+        cards.forEach(card => {
+          const title = card.getAttribute('data-title') || '';
+          const content = card.getAttribute('data-content') || '';
+          
+          if (!query || title.includes(query) || content.includes(query)) {
+            card.classList.remove('hidden');
+            count++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        if (resultsCount) resultsCount.innerText = count.toString();
+        if (noResults && searchGrid) {
+          if (count === 0) {
+            noResults.classList.remove('hidden');
+            searchGrid.classList.add('hidden');
+          } else {
+            noResults.classList.add('hidden');
+            searchGrid.classList.remove('hidden');
+          }
+        }
+
+        // Atualiza URL sem recarregar a página
+        const newUrl = query ? `/busca?q=${encodeURIComponent(query)}` : '/busca';
+        window.history.replaceState(null, '', newUrl);
+      }
+
+      searchInput.oninput = filterRecipes;
+
+      if (clearBtn) {
+        clearBtn.onclick = () => {
+          searchInput.value = '';
+          filterRecipes();
+          searchInput.focus();
+        };
+      }
+
+      // Executa filtro inicial se tiver parâmetro na URL
+      filterRecipes();
+    }
+
+    initSearchPage();
+    document.addEventListener('astro:after-swap', initSearchPage);
+  </script>
+</Layout>

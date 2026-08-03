@@ -1,0 +1,115 @@
+---
+import { getCategories } from '../utils/wp';
+
+const categories = await getCategories();
+---
+
+<!-- Overlay backdrop -->
+<div 
+  id="mobile-menu-backdrop"
+  class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"
+></div>
+
+<!-- Drawer panel -->
+<aside 
+  id="mobile-menu-drawer"
+  class="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-slate-900 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between overflow-y-auto"
+>
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-100 dark:border-slate-800">
+      <div class="flex items-center gap-3">
+        <img src="/logo.png" alt="Descomplicando Receitas" class="h-9 w-auto object-contain rounded-lg" />
+        <span class="font-black text-slate-900 dark:text-white">Menu</span>
+      </div>
+      <button 
+        id="close-mobile-menu"
+        class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+        aria-label="Fechar menu"
+      >
+        <span class="material-symbols-outlined text-2xl block">close</span>
+      </button>
+    </div>
+
+    <!-- Busca Rápida Mobile -->
+    <form action="/busca" method="GET" class="mb-6">
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+        <input 
+          type="search" 
+          name="q" 
+          placeholder="Buscar receitas..." 
+          class="w-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-transparent focus:border-primary rounded-xl py-3 pl-10 pr-4 text-sm outline-none transition-all"
+        />
+      </div>
+    </form>
+
+    <!-- Links Principais Produção -->
+    <nav class="space-y-2 mb-8">
+      <a href="/" class="flex items-center gap-3 px-4 py-3 font-bold text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary rounded-xl transition-colors">
+        <span class="material-symbols-outlined text-primary">home</span> HOME
+      </a>
+      <a href="/categoria/do-chef" class="flex items-center gap-3 px-4 py-3 font-bold text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary rounded-xl transition-colors">
+        <span class="material-symbols-outlined text-primary">restaurant</span> DO CHEF
+      </a>
+      <a href="/conversor-de-medidas" class="flex items-center gap-3 px-4 py-3 font-bold text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary rounded-xl transition-colors">
+        <span class="material-symbols-outlined text-primary">menu_book</span> BIBLIOTECA
+      </a>
+      <a href="/categoria/semana-santa" class="flex items-center gap-3 px-4 py-3 font-bold text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary rounded-xl transition-colors">
+        <span class="material-symbols-outlined text-primary">dinner_dining</span> SEMANA SANTA
+      </a>
+      <a href="/achadinhos" class="flex items-center gap-3 px-4 py-3 font-bold text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary rounded-xl transition-colors">
+        <span class="material-symbols-outlined text-primary">storefront</span> LOJA DA MARY
+      </a>
+    </nav>
+
+    <!-- Categorias Populares -->
+    <div>
+      <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 px-4">Categorias</h4>
+      <div class="space-y-1">
+        {categories.slice(0, 6).map(cat => (
+          <a 
+            href={`/categoria/${cat.slug}`}
+            class="flex items-center justify-between px-4 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+          >
+            <span>{cat.name}</span>
+            <span class="text-xs bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full text-slate-400">{cat.count}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40">
+    <p class="text-xs text-center text-slate-400">© {new Date().getFullYear()} Descomplicando Receitas</p>
+  </div>
+</aside>
+
+<script is:inline>
+  function initMobileMenu() {
+    const btnOpen = document.getElementById('open-mobile-menu');
+    const btnClose = document.getElementById('close-mobile-menu');
+    const backdrop = document.getElementById('mobile-menu-backdrop');
+    const drawer = document.getElementById('mobile-menu-drawer');
+
+    if (!btnOpen || !drawer || !backdrop) return;
+
+    function openMenu() {
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      drawer.classList.remove('translate-x-full');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      drawer.classList.add('translate-x-full');
+      document.body.style.overflow = '';
+    }
+
+    btnOpen.onclick = openMenu;
+    if (btnClose) btnClose.onclick = closeMenu;
+    backdrop.onclick = closeMenu;
+  }
+
+  initMobileMenu();
+  document.addEventListener('astro:after-swap', initMobileMenu);
+</script>

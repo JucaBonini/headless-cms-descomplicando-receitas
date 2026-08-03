@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>5 Dicas para Deixar seu Bolo mais Fofinho | Blog de Culinária</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 transition-colors duration-200">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2 text-primary" href="#">
+<span class="material-symbols-outlined text-3xl font-bold">bakery_dining</span>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Boleiros</h1>
+</a>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Receitas</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Dicas</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Sobre</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+<span class="material-symbols-outlined text-sm">search</span>
+</span>
+<input class="block w-full pl-10 pr-3 py-2 border-none bg-slate-100 dark:bg-slate-800 rounded-xl text-sm placeholder-slate-500 focus:ring-2 focus:ring-primary/50" placeholder="Buscar receitas..." type="text"/>
+</div>
+<button class="p-2 rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Article Content Column -->
+<article class="lg:col-span-8">
+<!-- Breadcrumbs -->
+<nav aria-label="Breadcrumb" class="flex text-sm text-slate-500 mb-4">
+<ol class="flex items-center space-x-2">
+<li><a class="hover:text-primary" href="#">Home</a></li>
+<li class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary" href="#">Dicas</a>
+</li>
+</ol>
+</nav>
+<h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">5 Dicas Infalíveis para Deixar seu Bolo mais Fofinho</h1>
+<!-- Author & Meta -->
+<div class="flex items-center gap-4 mb-8 pb-8 border-b border-slate-200 dark:border-slate-800">
+<div class="size-14 rounded-full bg-cover bg-center ring-2 ring-primary/20" data-alt="Portrait of Maria Silva, pastry chef" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAsQoXmWzhc_cFTYuzItCLrkzuxHJAOoCEFZiRJ6azgqJQ1yDMgfxWQ0ghxf1OJ3yoJQhY1tyEPS2JMlzg36x3NCKTfmlBAGe_9tXUQ7xLqrP7ZrBb7FEugJkuQVB5CYttYv_8B_5dxK--MKa4Oz3HZeKcVLoIMT5eErk5Bz6vdWnQPd936il_BWJwYMWCjjVuxavis7RSiXwy8S3-df1A3H3OlfhR48ZCGUpsYomamIA6kvcmzl8jKv8Lgg27xFS417s28VyD21Q')"></div>
+<div>
+<p class="font-bold text-lg">Por Maria Silva</p>
+<p class="text-sm text-slate-500">Especialista em Confeitaria • 15 de Outubro, 2023 • 8 min de leitura</p>
+</div>
+</div>
+<!-- Featured Image -->
+<div class="relative aspect-video rounded-3xl overflow-hidden mb-10 shadow-xl">
+<img alt="Bolo de chocolate fofinho" class="w-full h-full object-cover" data-alt="Close up of a fluffy chocolate cake slice with crumbs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIU6Xot7HXhsPhhuxj98yreKgX1BYIJOqEGKiETNh6k4PfnMJ-y0USlOn5IbsLUUHiyOj71-aOWB4wj8TX_TQP77nRgLcH0H644WmLDOXw8JST3q9OByMxGFq7cnOUHgP3o6yuUOtUh63cr6M2KwcKA3gOEAZvvqY1Wtv0I2wDPGWCDglWZdDyLb_UBBai0OQmtMkJdgCkxz4GHC65xrJQpZtLMXUvRiAgk4MsO_qtMEVSM3EZqvN9UVtc45AB4t07QY2J2PT4jA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+</div>
+<!-- Article Body -->
+<div class="prose prose-slate dark:prose-invert max-w-none text-lg leading-relaxed space-y-6">
+<p class="text-xl text-slate-600 dark:text-slate-400 italic">
+                        Não há nada mais frustrante do que dedicar tempo a uma receita e terminar com um bolo solado ou seco. O segredo da fofura não está apenas nos ingredientes, mas na técnica.
+                    </p>
+<h2 class="text-2xl font-bold mt-8 text-primary">1. A Temperatura dos Ingredientes</h2>
+<p>
+                        Este é o erro número um de muitos iniciantes. Ovos, leite e manteiga devem estar em <strong>temperatura ambiente</strong>. Ingredientes gelados não se misturam de forma homogênea, impedindo a criação de uma emulsão perfeita que retém o ar.
+                    </p>
+<h2 class="text-2xl font-bold mt-8 text-primary">2. Peneire Sempre os Secos</h2>
+<p>
+                        Peneirar a farinha, o chocolate em pó e o fermento não serve apenas para tirar grumos. Este processo <strong>aera os ingredientes</strong>, permitindo que a massa fique mais leve e suba com mais facilidade no forno.
+                    </p>
+<h3 class="text-xl font-semibold mt-4">Dica de mestre:</h3>
+<p class="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg">
+                        Tente peneirar a farinha duas vezes para obter um resultado ainda mais profissional em massas delicadas como o Pão de Ló.
+                    </p>
+<h2 class="text-2xl font-bold mt-8 text-primary">3. O Batimento Correto</h2>
+<p>
+                        Bata bem a manteiga com o açúcar até obter um creme esbranquiçado. No entanto, após adicionar a farinha, <strong>não bata demais</strong>. O excesso de batimento desenvolve o glúten, o que deixa o bolo elástico e pesado em vez de fofinho.
+                    </p>
+<h2 class="text-2xl font-bold mt-8 text-primary">4. Não Abra o Forno Cedo</h2>
+<p>
+                        O choque térmico é o maior inimigo do crescimento. Nunca abra o forno antes de passarem pelo menos 75% do tempo total de cozimento. A estrutura do bolo precisa de calor constante para se estabilizar.
+                    </p>
+<h2 class="text-2xl font-bold mt-8 text-primary">5. A Medida Exata do Fermento</h2>
+<p>
+                        Fermento demais faz o bolo crescer rápido demais e colapsar no meio. Fermento de menos impede o crescimento. Use sempre uma colher medidora padrão e verifique a validade do produto.
+                    </p>
+</div>
+<!-- Social Sharing -->
+<div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+<p class="text-sm font-bold uppercase tracking-widest text-slate-500 mb-4">Gostou da dica? Compartilhe:</p>
+<div class="flex flex-wrap gap-4">
+<button class="flex items-center gap-2 px-4 py-2 bg-[#1877F2] text-white rounded-xl hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-xl">share</span>
+<span class="font-medium">Facebook</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-[#1DA1F2] text-white rounded-xl hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-xl">post_add</span>
+<span class="font-medium">Twitter</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-xl hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-xl">chat</span>
+<span class="font-medium">WhatsApp</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-xl">link</span>
+<span class="font-medium">Copiar Link</span>
+</button>
+</div>
+</div>
+<!-- Comments Section -->
+<section class="mt-16">
+<h3 class="text-2xl font-bold mb-8">Comentários (3)</h3>
+<div class="space-y-8">
+<!-- Comment Input -->
+<div class="flex gap-4">
+<div class="size-10 rounded-full bg-slate-300 shrink-0"></div>
+<div class="flex-1">
+<textarea class="w-full rounded-xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-primary focus:border-primary p-4" placeholder="O que você achou desta dica?" rows="3"></textarea>
+<button class="mt-2 px-6 py-2 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors">Postar Comentário</button>
+</div>
+</div>
+<!-- Single Comment -->
+<div class="flex gap-4">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Avatar of user Carlos" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdHDe4eYaIcK7Sd4fpZMr4Wi6-cB8T-yWe6Jm0lxwW3-dey-3DHNJz9BduNL-2qX4ZA00DFe-0HM6LybAjMmvKHReORWY133dojgWFWZqGavx4aiXJwc_9wvSb-TTcJUbGyf729dXR2tqdoTmBVFAxX6P63hAAe5V6JxEHHL3y7xYpR7jcILMo0oiOcNuhNdk2NcjTR5iCNa3vm5TTM9RoMHaGLo9G_scTKIJGQRQeIttQC5LIW4ZZ4mBMEuDwBifGQlHgDWNtSA')"></div>
+<div>
+<div class="bg-slate-100 dark:bg-slate-800 p-4 rounded-2xl rounded-tl-none">
+<p class="font-bold text-sm">Carlos Mendes</p>
+<p class="text-slate-600 dark:text-slate-400 mt-1">Sempre tive problemas com a temperatura dos ovos. Vou tentar tirar da geladeira mais cedo na próxima vez! Obrigado!</p>
+</div>
+<div class="flex items-center gap-4 mt-2 ml-2 text-xs font-medium text-slate-500">
+<button class="hover:text-primary">Curtir</button>
+<button class="hover:text-primary">Responder</button>
+<span>há 2 horas</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</article>
+<!-- Sidebar -->
+<aside class="lg:col-span-4 space-y-10">
+<!-- Newsletter Card -->
+<div class="bg-primary/10 p-6 rounded-3xl border border-primary/20">
+<h4 class="text-xl font-bold mb-2">Dicas no seu E-mail</h4>
+<p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Receba nossas melhores receitas e truques de confeitaria semanalmente.</p>
+<form class="space-y-3">
+<input class="w-full rounded-xl border-none bg-white dark:bg-slate-900 px-4 py-3 text-sm focus:ring-2 focus:ring-primary/50" placeholder="Seu melhor e-mail" type="email"/>
+<button class="w-full py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all">Quero me inscrever</button>
+</form>
+</div>
+<!-- Recommended Articles -->
+<div>
+<h4 class="text-lg font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+                        Recomendados
+                    </h4>
+<div class="space-y-6">
+<!-- Rec Item 1 -->
+<a class="group flex gap-4" href="#">
+<div class="size-20 rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" data-alt="Delicious caramel brownie" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAebX8wRc5VK6L6FLzknI73MDNTBYhJWjz4xiojYefcMb2X3HF2_InQsgs9aUncoseTOfzP8_xCXHXyZZTF6_n4K6ljgpa9XJxh-xeM1-7xgUtUwvbANtGgLcyQIy5MbSz3QzoubTXiu54DGUfphA5iceZvXQbu8t48oHBrjXn3FO5VFjY1WjV2GaUCsohfxVPkE_C8VqS_w9RIGSPv8m6OkQqrskNiV3hAVWFOCOv4FQ5XeAIbm1mgWHIZXdgOR8ihfvGOFusTcQ"/>
+</div>
+<div class="flex flex-col justify-center">
+<h5 class="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors">Como fazer o Brownie perfeito com casquinha crocante</h5>
+<p class="text-xs text-slate-500 mt-1">7 de Outubro, 2023</p>
+</div>
+</a>
+<!-- Rec Item 2 -->
+<a class="group flex gap-4" href="#">
+<div class="size-20 rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" data-alt="Pink glazed cupcake with sprinkles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-tL3DTZPdiJbPzm_La6jpVJ1vQU7BBiRlvPUTAXHS2-f_3MOloe6x18PhLINuZCl3VCt21hEb1pFfYgfd9oWFeqSu-SdpJdk-R_osdUpzc0qoIcaPuYDY6kxIi9DaR5EKTbYMKljOEfyF7tCs6VT1q-KifXUpPb0CJ4iXfoXf_YG6nxfNALIus6vnDOu-66-Dnsqslmue6FCMBlA7SK_LLAA0MTNMSz1PO47hxuMBA5E2Zj4MbBe0C5KZPM8TBuYjH1xLg-mw4w"/>
+</div>
+<div class="flex flex-col justify-center">
+<h5 class="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors">Guia de Coberturas: Buttercream vs Chantilly</h5>
+<p class="text-xs text-slate-500 mt-1">2 de Outubro, 2023</p>
+</div>
+</a>
+<!-- Rec Item 3 -->
+<a class="group flex gap-4" href="#">
+<div class="size-20 rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" data-alt="Array of colorful cake decorations" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKYHyA6ZTSMnyiyDYrLaYcuRPo_1k3a6eR4s5pvPo11-nJ6PejFbe9zx4zu4mIkw0E9WMUOiFoLUyLZTUr-cxBPp1lnEieKyFMZDySl3g848nm9T7dpR_WNnWlLbbL2T-QYZu6bmeLSP3icDSSW-YKVOFb0j8WWYbfAd8yI3WlGgBshzJv-2H4VoxlmuVEdgTDz5QkYyk-b2pIYLo7Ax_SUyY35Uhj15xLtPMrWFvZcLmp7yubW_kMCx8qhB5jlclH85F_SZLedg"/>
+</div>
+<div class="flex flex-col justify-center">
+<h5 class="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors">10 Utensílios que toda confeiteira iniciante precisa ter</h5>
+<p class="text-xs text-slate-500 mt-1">28 de Setembro, 2023</p>
+</div>
+</a>
+</div>
+</div>
+<!-- Popular Categories -->
+<div class="pt-6">
+<h4 class="text-lg font-bold mb-4">Categorias Populares</h4>
+<div class="flex flex-wrap gap-2">
+<a class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-primary/10 hover:text-primary rounded-lg text-sm transition-colors" href="#">Bolos Caseiros</a>
+<a class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-primary/10 hover:text-primary rounded-lg text-sm transition-colors" href="#">Confeitaria Profissional</a>
+<a class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-primary/10 hover:text-primary rounded-lg text-sm transition-colors" href="#">Sobremesas Rápidas</a>
+<a class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-primary/10 hover:text-primary rounded-lg text-sm transition-colors" href="#">Vegano &amp; Fit</a>
+<a class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-primary/10 hover:text-primary rounded-lg text-sm transition-colors" href="#">Festas</a>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-100 dark:bg-slate-900 mt-20 py-12 border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-2 text-primary opacity-80">
+<span class="material-symbols-outlined text-2xl">bakery_dining</span>
+<span class="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100">Boleiros</span>
+</div>
+<nav class="flex gap-8 text-sm font-medium text-slate-500">
+<a class="hover:text-primary" href="#">Termos</a>
+<a class="hover:text-primary" href="#">Privacidade</a>
+<a class="hover:text-primary" href="#">Contato</a>
+<a class="hover:text-primary" href="#">Anuncie</a>
+</nav>
+<div class="text-slate-500 text-sm">
+                    © 2023 Boleiros. Todos os direitos reservados.
+                </div>
+</div>
+</div>
+</footer>
+</body></html>

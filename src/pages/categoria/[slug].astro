@@ -1,0 +1,102 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RecipeCard from '../../components/RecipeCard.astro';
+import { getCategories, getPosts, getCategoryBySlug } from '../../utils/wp';
+
+export async function getStaticPaths() {
+  const categories = await getCategories();
+  return categories.map(cat => ({
+    params: { slug: cat.slug },
+    props: { category: cat }
+  }));
+}
+
+const { category } = Astro.props;
+
+const activeCategory = category || await getCategoryBySlug(Astro.params.slug);
+
+if (!activeCategory) {
+  return Astro.redirect('/404');
+}
+
+const posts = await getPosts({ categoryId: activeCategory.id, limit: 100 });
+
+// Schema.org CollectionPage / Breadcrumb
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://descomplicandoreceitas.com.br"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Categorias",
+      "item": "https://descomplicandoreceitas.com.br/#categorias"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": activeCategory.name
+    }
+  ]
+};
+---
+
+<Layout 
+  title={`${activeCategory.name} - Receitas Práticas | Descomplicando Receitas`}
+  description={`Confira todas as melhores receitas de ${activeCategory.name}. Passo a passo fácil, rápido e testado.`}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-2 text-sm text-slate-500 mb-6">
+      <a class="hover:text-primary transition-colors" href="/">Home</a>
+      <span class="material-symbols-outlined text-sm">chevron_right</span>
+      <a class="hover:text-primary transition-colors" href="/#categorias">Categorias</a>
+      <span class="material-symbols-outlined text-sm">chevron_right</span>
+      <span class="text-primary font-medium">{activeCategory.name}</span>
+    </nav>
+
+    <!-- Header da Categoria -->
+    <div class="bg-primary/10 dark:bg-primary/5 rounded-3xl p-8 sm:p-12 mb-12 border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div>
+        <span class="bg-primary text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3 inline-block">
+          Categoria
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 mb-3">
+          {activeCategory.name}
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400 max-w-xl text-base sm:text-lg">
+          {posts.length} {posts.length === 1 ? 'receita encontrada' : 'receitas encontradas'} nesta categoria para deixar seu dia a dia delicioso.
+        </p>
+      </div>
+      <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white dark:bg-slate-800 shadow-xl flex items-center justify-center flex-shrink-0 text-primary">
+        <span class="material-symbols-outlined text-4xl sm:text-5xl">restaurant</span>
+      </div>
+    </div>
+
+    <!-- Grid de Receitas da Categoria -->
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map(post => (
+          <RecipeCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-16 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700">
+        <span class="material-symbols-outlined text-5xl text-slate-400 mb-4 block">search_off</span>
+        <h3 class="text-xl font-bold mb-2">Nenhuma receita encontrada</h3>
+        <p class="text-slate-500 mb-6">Em breve adicionaremos novas receitas para esta categoria.</p>
+        <a href="/" class="bg-primary text-white font-bold px-6 py-3 rounded-xl inline-flex items-center gap-2">
+          Ver todas as receitas
+        </a>
+      </div>
+    )}
+  </main>
+</Layout>

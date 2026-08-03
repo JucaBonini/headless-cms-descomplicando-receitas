@@ -1,0 +1,78 @@
+---
+const pathname = Astro.url.pathname;
+
+function isActive(path: string) {
+  if (path === '/' && pathname === '/') return true;
+  if (path !== '/' && pathname.startsWith(path)) return true;
+  return false;
+}
+---
+
+<!-- Native App Style Bottom Tab Bar (Visível apenas em Mobile/Tablet) -->
+<nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-slate-200/80 dark:border-slate-800 px-2 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] shadow-2xl">
+  <div class="flex items-center justify-around max-w-md mx-auto">
+    
+    <!-- Home -->
+    <a 
+      href="/" 
+      class={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all active:scale-90 ${isActive('/') ? 'text-primary font-black' : 'text-slate-500 dark:text-slate-400 hover:text-primary'}`}
+    >
+      <span class="material-symbols-outlined text-2xl">home</span>
+      <span class="text-[10px] font-bold mt-0.5 tracking-tight">Início</span>
+    </a>
+
+    <!-- Buscar -->
+    <a 
+      href="/busca" 
+      class={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all active:scale-90 ${isActive('/busca') ? 'text-primary font-black' : 'text-slate-500 dark:text-slate-400 hover:text-primary'}`}
+    >
+      <span class="material-symbols-outlined text-2xl">search</span>
+      <span class="text-[10px] font-bold mt-0.5 tracking-tight">Buscar</span>
+    </a>
+
+    <!-- Botão Central Destaque (Conversor) -->
+    <a 
+      href="/conversor-de-medidas" 
+      class="flex flex-col items-center justify-center -mt-5"
+      aria-label="Conversor de Medidas"
+    >
+      <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/40 active:scale-95 transition-transform border-4 border-white dark:border-slate-900">
+        <span class="material-symbols-outlined text-2xl">calculate</span>
+      </div>
+      <span class="text-[10px] font-bold text-primary mt-0.5 tracking-tight">Medidas</span>
+    </a>
+
+    <!-- Achadinhos / Loja -->
+    <a 
+      href="/achadinhos" 
+      class={`flex flex-col items-center py-1 px-3 rounded-2xl transition-all active:scale-90 ${isActive('/achadinhos') ? 'text-primary font-black' : 'text-slate-500 dark:text-slate-400 hover:text-primary'}`}
+    >
+      <span class="material-symbols-outlined text-2xl">storefront</span>
+      <span class="text-[10px] font-bold mt-0.5 tracking-tight">Loja</span>
+    </a>
+
+    <!-- Menu / Categorias -->
+    <button 
+      id="bottom-nav-menu-btn"
+      class="flex flex-col items-center py-1 px-3 rounded-2xl text-slate-500 dark:text-slate-400 hover:text-primary transition-all active:scale-90 cursor-pointer"
+    >
+      <span class="material-symbols-outlined text-2xl">menu</span>
+      <span class="text-[10px] font-bold mt-0.5 tracking-tight">Mais</span>
+    </button>
+
+  </div>
+</nav>
+
+<script is:inline>
+  function initBottomNav() {
+    const bottomBtn = document.getElementById('bottom-nav-menu-btn');
+    const topMenuBtn = document.getElementById('open-mobile-menu');
+
+    if (bottomBtn && topMenuBtn) {
+      bottomBtn.onclick = () => topMenuBtn.click();
+    }
+  }
+
+  initBottomNav();
+  document.addEventListener('astro:after-swap', initBottomNav);
+</script>

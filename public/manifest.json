@@ -1,0 +1,23 @@
+{
+  "name": "Descomplicando Receitas",
+  "short_name": "D. Receitas",
+  "description": "Receitas simples, rápidas e deliciosas para o seu dia a dia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ec5b13",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

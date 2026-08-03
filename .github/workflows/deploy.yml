@@ -1,0 +1,39 @@
+name: Deploy receitas-headless to Contabo VPS (CyberPanel)
+
+on:
+  push:
+    branches:
+      - main # Dispara ao fazer push na branch main
+  workflow_dispatch: # Permite disparar manualmente ou via webhook externo do WordPress!
+
+jobs:
+  web-deploy:
+    name: Build & Deploy via FTP
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-style: 'npm'
+          node-version: '22'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Project (Gera HTML/CSS estáticos buscando dados do WP)
+        run: npm run build
+
+      - name: 🚀 Deploy via FTP to CyberPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: / # Envia para o diretório raiz do FTP (que deve estar apontado para public_html)
+          local-dir: ./dist/ # Pasta que o Astro gera ao fazer o build
+          protocol: ftp
+          port: 21

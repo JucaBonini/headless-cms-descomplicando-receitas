@@ -1,0 +1,176 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import MobileMenu from '../components/MobileMenu.astro';
+import BottomNav from '../components/BottomNav.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = "Descomplicando Receitas - Cozinha Simples e Rápida",
+  description = "Quer cozinhar sem complicação? Encontre receitas práticas, rápidas e aprovadas pela Chef Mary Rodrigues.",
+  image = "/default-share.jpg"
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://descomplicandoreceitas.com.br');
+---
+
+<!doctype html>
+<html lang="pt-BR" class="class">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#ec5b13" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="D. Receitas" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
+
+    <!-- Google Fonts: Public Sans (Display) e Material Symbols Outlined -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <!-- View Transitions para transição suave de página -->
+    <ClientRouter />
+  </head>
+  <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 transition-colors duration-200 min-h-screen flex flex-col antialiased selection:bg-primary selection:text-white">
+    <!-- Top Navigation Bar matching production -->
+    <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 sm:h-20">
+          <div class="flex items-center gap-6 xl:gap-10">
+            <a class="flex items-center group active:scale-95 transition-transform" href="/">
+              <img src="/logo.png" alt="Descomplicando Receitas" class="h-10 sm:h-12 w-auto object-contain" />
+            </a>
+            <nav class="hidden lg:flex items-center gap-1 xl:gap-2">
+              <a class="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-primary transition-all uppercase tracking-[0.12em] rounded-full hover:bg-slate-100 dark:hover:bg-slate-800" href="/">HOME</a>
+              <a class="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-primary transition-all uppercase tracking-[0.12em] rounded-full hover:bg-slate-100 dark:hover:bg-slate-800" href="/categoria/do-chef">DO CHEF</a>
+              <a class="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-primary transition-all uppercase tracking-[0.12em] rounded-full hover:bg-slate-100 dark:hover:bg-slate-800" href="/conversor-de-medidas">BIBLIOTECA</a>
+              <a class="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-primary transition-all uppercase tracking-[0.12em] rounded-full hover:bg-slate-100 dark:hover:bg-slate-800" href="/categoria/semana-santa">SEMANA SANTA</a>
+              <a class="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-primary transition-all uppercase tracking-[0.12em] rounded-full hover:bg-slate-100 dark:hover:bg-slate-800" href="/achadinhos">LOJA DA MARY</a>
+            </nav>
+          </div>
+          <div class="flex items-center gap-3">
+            <!-- Live Search -->
+            <form action="/busca" method="GET" class="hidden md:flex items-center bg-slate-100 dark:bg-slate-800 rounded-2xl px-4 py-2 border border-transparent focus-within:border-primary/30 transition-all">
+              <span class="material-symbols-outlined text-slate-400 text-xl mr-2">search</span>
+              <input 
+                class="bg-transparent border-none focus:ring-0 text-xs font-bold text-slate-800 dark:text-white placeholder:text-slate-400 outline-none w-36 xl:w-48 uppercase tracking-widest" 
+                name="q" 
+                placeholder="Buscar receitas..." 
+                type="search"
+              />
+            </form>
+
+            <!-- Dark Mode Toggle -->
+            <button 
+              id="theme-toggle" 
+              type="button" 
+              aria-label="Alternar modo de cor"
+              class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-primary transition-all cursor-pointer active:scale-90"
+            >
+              <span class="material-symbols-outlined text-xl dark:hidden">dark_mode</span>
+              <span class="material-symbols-outlined text-xl hidden dark:block">light_mode</span>
+            </button>
+
+            <!-- Favorites -->
+            <a 
+              href="/busca" 
+              aria-label="Favoritas"
+              class="w-10 h-10 flex items-center justify-center rounded-2xl bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all cursor-pointer active:scale-90"
+            >
+              <span class="material-symbols-outlined text-xl">favorite</span>
+            </a>
+
+            <!-- Mobile Drawer Button -->
+            <button 
+              id="open-mobile-menu"
+              class="lg:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors cursor-pointer" 
+              aria-label="Abrir menu"
+            >
+              <span class="material-symbols-outlined text-2xl block">menu</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-grow pb-20 lg:pb-0">
+      <slot />
+    </main>
+
+    <!-- Mobile Drawer Menu -->
+    <MobileMenu />
+
+    <!-- Mobile Bottom Navigation Bar (App Experience) -->
+    <BottomNav />
+
+    <!-- Footer matching template -->
+    <footer class="bg-slate-900 text-slate-300 py-16 mt-20 pb-28 lg:pb-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          <div class="col-span-1 md:col-span-2">
+            <div class="flex items-center gap-3 mb-6">
+              <img src="/logo.png" alt="Descomplicando Receitas" class="h-10 w-auto object-contain rounded-xl" />
+              <span class="text-xl font-black text-white">Descomplicando Receitas</span>
+            </div>
+            <p class="max-w-md text-slate-400 leading-relaxed">
+              Nossa missão é mostrar que cozinhar pode ser simples, rápido e incrivelmente prazeroso. Transformamos ingredientes comuns em refeições extraordinárias para o seu dia a dia.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-white font-bold mb-6">Navegação</h3>
+            <ul class="space-y-4 text-sm">
+              <li><a class="hover:text-primary transition-colors" href="/">Todas as Receitas</a></li>
+              <li><a class="hover:text-primary transition-colors" href="/conversor-de-medidas">Conversor de Medidas</a></li>
+              <li><a class="hover:text-primary transition-colors" href="/achadinhos">Achadinhos & Utensílios</a></li>
+              <li><a class="hover:text-primary transition-colors" href="/#categorias">Categorias</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-white font-bold mb-6">Ferramentas</h3>
+            <ul class="space-y-4 text-sm">
+              <li><a class="hover:text-primary transition-colors" href="/conversor-de-medidas">Calculadora de Xícaras & Gramas</a></li>
+              <li><a class="hover:text-primary transition-colors" href="/conversor-de-medidas#forno">Conversor Temperatura Forno</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-slate-800 pt-8 mt-8">
+          <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p class="text-sm">© {new Date().getFullYear()} Descomplicando Receitas. Todos os direitos reservados.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+
