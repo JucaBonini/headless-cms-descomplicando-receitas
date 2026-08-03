@@ -27,13 +27,12 @@ jobs:
       - name: 🏗️ Build Project (Gera HTML/CSS estáticos buscando dados do WP)
         run: npm run build
 
-      - name: 🚀 Deploy via SCP/SFTP to Integrator ICP
-        uses: appleboy/scp-action@v0.1.7
+      - name: 🚀 Deploy via FTP to Integrator ICP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.FTP_SERVER }}
+          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 22
-          source: 'dist/*'
-          target: '/etc/icontainer/apps/openresty/openresty/www/sites/descomplicandoreceitas.com.br/index/'
-          strip_components: 1
+          server-dir: /
+          local-dir: ./dist/
+          protocol: ftp
