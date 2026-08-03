@@ -43,11 +43,17 @@ export interface WPCategory {
   description?: string;
 }
 
-const WP_URL = 'https://admin.descomplicandoreceitas.com.br';
+const PRIMARY_WP_URL = 'https://admin.descomplicandoreceitas.com.br';
+const FALLBACK_WP_URL = 'https://descomplicandoreceitas.com.br';
+let WP_URL = PRIMARY_WP_URL;
 
 export async function getCategories(): Promise<WPCategory[]> {
   try {
-    const res = await fetch(`${WP_URL}/wp-json/wp/v2/categories?per_page=100`);
+    let res = await fetch(`${WP_URL}/wp-json/wp/v2/categories?per_page=100`);
+    if (!res.ok && WP_URL !== FALLBACK_WP_URL) {
+      WP_URL = FALLBACK_WP_URL;
+      res = await fetch(`${WP_URL}/wp-json/wp/v2/categories?per_page=100`);
+    }
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     const categories = (await res.json()) as WPCategory[];
     // Filtra apenas categorias que têm posts
@@ -70,16 +76,20 @@ export async function getCategoryBySlug(slug: string): Promise<WPCategory | null
 
 export async function getPosts(options: { categoryId?: number; limit?: number; search?: string } = {}): Promise<WPPost[]> {
   const { categoryId, limit = 100, search } = options;
-  let url = `${WP_URL}/wp-json/wp/v2/posts?_embed=1&per_page=${limit}`;
+  let queryParams = `_embed=1&per_page=${limit}`;
   if (categoryId) {
-    url += `&categories=${categoryId}`;
+    queryParams += `&categories=${categoryId}`;
   }
   if (search) {
-    url += `&search=${encodeURIComponent(search)}`;
+    queryParams += `&search=${encodeURIComponent(search)}`;
   }
   
   try {
-    const res = await fetch(url);
+    let res = await fetch(`${WP_URL}/wp-json/wp/v2/posts?${queryParams}`);
+    if (!res.ok && WP_URL !== FALLBACK_WP_URL) {
+      WP_URL = FALLBACK_WP_URL;
+      res = await fetch(`${WP_URL}/wp-json/wp/v2/posts?${queryParams}`);
+    }
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     return (await res.json()) as WPPost[];
   } catch (error) {
@@ -89,9 +99,12 @@ export async function getPosts(options: { categoryId?: number; limit?: number; s
 }
 
 export async function getPostBySlug(slug: string): Promise<WPPost | null> {
-  const url = `${WP_URL}/wp-json/wp/v2/posts?slug=${slug}&_embed=1`;
   try {
-    const res = await fetch(url);
+    let res = await fetch(`${WP_URL}/wp-json/wp/v2/posts?slug=${slug}&_embed=1`);
+    if (!res.ok && WP_URL !== FALLBACK_WP_URL) {
+      WP_URL = FALLBACK_WP_URL;
+      res = await fetch(`${WP_URL}/wp-json/wp/v2/posts?slug=${slug}&_embed=1`);
+    }
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     const posts = (await res.json()) as WPPost[];
     return posts.length > 0 ? posts[0] : null;
